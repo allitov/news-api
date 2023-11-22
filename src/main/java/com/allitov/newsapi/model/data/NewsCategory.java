@@ -2,11 +2,13 @@ package com.allitov.newsapi.model.data;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldNameConstants;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
+@FieldNameConstants
 @Entity
 @Table(name = "news_categories")
 public class NewsCategory {
