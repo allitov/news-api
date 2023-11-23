@@ -4,7 +4,7 @@ import com.allitov.newsapi.web.dto.response.comment.CommentListResponse;
 import lombok.Data;
 
 @Data
-public class NewsWithCommentsContentResponse {
+public class NewsResponse {
 
     private NewsData news;
 
