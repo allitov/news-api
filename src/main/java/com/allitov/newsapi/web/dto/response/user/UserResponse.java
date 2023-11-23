@@ -13,5 +13,5 @@ public class UserResponse {
 
     private String email;
 
-    private Instant regTime;
+    private Instant regDate;
 }

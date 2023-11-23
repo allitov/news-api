@@ -7,6 +7,7 @@ import com.allitov.newsapi.web.dto.response.comment.CommentResponse;
 import com.allitov.newsapi.web.mapper.delegate.CommentMapperDelegate;
 import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public interface CommentMapper {
 
     Comment requestToComment(CommentRequest request);
 
+    @Mapping(source = "commentId", target = "id")
     Comment requestToComment(Long commentId, CommentRequest request);
 
     CommentResponse commentToResponse(Comment comment);
