@@ -44,7 +44,7 @@ public class DatabaseUserService implements UserService {
         User foundUser = findById(user.getId());
         BeanUtils.copyNonNullProperties(user, foundUser);
 
-        return foundUser;
+        return userRepository.save(foundUser);
     }
 
     @Override
