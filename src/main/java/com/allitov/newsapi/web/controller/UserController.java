@@ -7,6 +7,7 @@ import com.allitov.newsapi.web.dto.response.user.UserListResponse;
 import com.allitov.newsapi.web.dto.response.user.UserResponse;
 import com.allitov.newsapi.web.filter.UserFilter;
 import com.allitov.newsapi.web.mapper.UserMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,14 +33,14 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserResponse> create(@RequestBody UserRequest request) {
+    public ResponseEntity<UserResponse> create(@RequestBody @Valid UserRequest request) {
         User user = userService.save(userMapper.requestToUser(request));
 
         return ResponseEntity.status(HttpStatus.CREATED).body(userMapper.userToResponse(user));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponse> update(@PathVariable("id") Long id, @RequestBody UserRequest request) {
+    public ResponseEntity<UserResponse> update(@PathVariable("id") Long id, @RequestBody @Valid UserRequest request) {
         User user = userService.update(userMapper.requestToUser(id, request));
 
         return ResponseEntity.ok(userMapper.userToResponse(user));

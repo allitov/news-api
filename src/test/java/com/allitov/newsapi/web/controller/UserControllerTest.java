@@ -164,8 +164,24 @@ public class UserControllerTest extends AbstractControllerTest {
                 .getResponse()
                 .getContentAsString();
 
+        Mockito.verify(userService, Mockito.times(1)).findById(500L);
+
         String expectedResponse = TestUtils.readStringFromResource("response/user/user_by_id_not_found_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
+    }
+
+    @Test
+    public void whenCreateUserWithEmptyRequest_thenReturnError() throws Exception {
+        UserRequest request = new UserRequest();
+
+        mockMvc.perform(MockMvcRequestBuilders
+                .post("/api/user")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
     }
 }
