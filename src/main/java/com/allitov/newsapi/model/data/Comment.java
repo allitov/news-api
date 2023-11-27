@@ -35,5 +35,5 @@ public class Comment {
     private Instant creationDate;
 
     @UpdateTimestamp
-    private Instant last_update;
+    private Instant lastUpdate;
 }

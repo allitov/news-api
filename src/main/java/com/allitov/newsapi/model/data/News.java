@@ -7,7 +7,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -39,5 +41,18 @@ public class News {
     private NewsCategory category;
 
     @OneToMany(mappedBy = "news", cascade = CascadeType.ALL)
-    private List<Comment> comments;
+    @Builder.Default
+    private List<Comment> comments = new ArrayList<>();
+
+    public void addComment(Comment comment) {
+        if (comment != null) {
+            comments.add(comment);
+        }
+    }
+
+    public void removeComment(Long commentId) {
+        if (commentId != null) {
+            comments = comments.stream().filter(c -> !c.getId().equals(commentId)).collect(Collectors.toList());
+        }
+    }
 }
