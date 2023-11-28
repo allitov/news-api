@@ -23,7 +23,7 @@ public class UserController {
     private final UserMapper userMapper;
 
     @GetMapping("/filter")
-    public ResponseEntity<UserListResponse> filterBy(UserFilter filter) {
+    public ResponseEntity<UserListResponse> filterBy(@Valid UserFilter filter) {
         return ResponseEntity.ok(userMapper.userListToUserResponseList(userService.filterBy(filter)));
     }
 
