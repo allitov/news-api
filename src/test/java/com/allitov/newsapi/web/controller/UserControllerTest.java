@@ -30,7 +30,7 @@ public class UserControllerTest extends AbstractControllerTest {
 
     @Test
     public void whenFindById_thenReturnClientById() throws Exception {
-        User user = createUser(1L, "Ivan", "email@example", null, null);
+        User user = createUser(1L, "Ivan", "email@example");
         UserResponse response = createUserResponse(1L, "Ivan", "email@example");
 
         Mockito.when(userService.findById(1L)).thenReturn(user);
@@ -53,8 +53,8 @@ public class UserControllerTest extends AbstractControllerTest {
     @Test
     public void whenFilterBy_thenReturnClients() throws Exception {
         List<User> users = new ArrayList<>();
-        users.add(createUser(1L, "Nadya", "nadya@email", null, null));
-        users.add(createUser(2L, "Ivan", "ivan@email", null, null));
+        users.add(createUser(1L, "Nadya", "nadya@email"));
+        users.add(createUser(2L, "Ivan", "ivan@email"));
         List<UserResponse> responses = new ArrayList<>();
         responses.add(createUserResponse(1L, "Nadya", "nadya@email"));
         responses.add(createUserResponse(2L, "Ivan", "ivan@email"));
@@ -84,8 +84,8 @@ public class UserControllerTest extends AbstractControllerTest {
 
     @Test
     public void whenCreateUser_thenReturnNewUser() throws Exception {
-        User user = createUser(1L, "New User", "user@email", null, null);
-        User userFromRequest = createUser(null, "New User", "user@email", null, null);
+        User user = createUser(1L, "New User", "user@email");
+        User userFromRequest = createUser(null, "New User", "user@email");
         UserResponse response = createUserResponse(1L, "New User", "user@email");
         UserRequest request = new UserRequest();
         request.setUserName("New User");
@@ -115,8 +115,8 @@ public class UserControllerTest extends AbstractControllerTest {
 
     @Test
     public void whenUpdateUser_thenReturnUpdatedUser() throws Exception {
-        User user = createUser(1L, "Updated User", "user@email", null, null);
-        User userFromRequest = createUser(null, "Updated User", "user@emial", null, null);
+        User user = createUser(1L, "Updated User", "user@email");
+        User userFromRequest = createUser(null, "Updated User", "user@emial");
         UserResponse response = createUserResponse(1L, "Updated User", "user@email");
         UserRequest request = new UserRequest();
         request.setUserName("Updated User");

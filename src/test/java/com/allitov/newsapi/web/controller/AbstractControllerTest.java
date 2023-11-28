@@ -26,30 +26,13 @@ public abstract class AbstractControllerTest {
 
     private final Instant time = Instant.parse("1970-01-01T00:00:00Z");
 
-    protected User createUser(Long id, String name, String email,
-                              List<News> news, List<Comment> comments) {
-        User user = User.builder()
+    protected User createUser(Long id, String name, String email) {
+        return User.builder()
                 .id(id)
                 .name(name)
                 .email(email)
                 .registrationDate(time)
                 .build();
-
-        if (news != null) {
-            news.forEach(n -> {
-                user.addNews(n);
-                n.setAuthor(user);
-            });
-        }
-
-        if (comments != null) {
-            comments.forEach(c -> {
-                user.addComment(c);
-                c.setAuthor(user);
-            });
-        }
-
-        return user;
     }
 
     protected News createNews(Long id, String content, User author,
