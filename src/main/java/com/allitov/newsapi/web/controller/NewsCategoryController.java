@@ -7,6 +7,7 @@ import com.allitov.newsapi.web.dto.response.newscategory.NewsCategoryListRespons
 import com.allitov.newsapi.web.dto.response.newscategory.NewsCategoryResponse;
 import com.allitov.newsapi.web.filter.NewsCategoryFilter;
 import com.allitov.newsapi.web.mapper.NewsCategoryMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class NewsCategoryController {
     private final NewsCategoryMapper newsCategoryMapper;
 
     @GetMapping("/filter")
-    public ResponseEntity<NewsCategoryListResponse> filterBy(NewsCategoryFilter filter) {
+    public ResponseEntity<NewsCategoryListResponse> filterBy(@Valid NewsCategoryFilter filter) {
         return ResponseEntity.ok(newsCategoryMapper.newsCategoryListToNewsCategoryListResponse(
                 newsCategoryService.filterBy(filter))
         );
@@ -34,7 +35,7 @@ public class NewsCategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<NewsCategoryResponse> create(@RequestBody NewsCategoryRequest request) {
+    public ResponseEntity<NewsCategoryResponse> create(@RequestBody @Valid NewsCategoryRequest request) {
         NewsCategory category = newsCategoryService.save(newsCategoryMapper.requestToNewsCategory(request));
 
         return ResponseEntity.status(HttpStatus.CREATED).body(newsCategoryMapper.newsCategoryToResponse(category));
@@ -42,7 +43,7 @@ public class NewsCategoryController {
 
     @PutMapping("/{id}")
     public ResponseEntity<NewsCategoryResponse> update(@PathVariable("id") Long id,
-                                                       @RequestBody NewsCategoryRequest request) {
+                                                       @RequestBody @Valid NewsCategoryRequest request) {
         NewsCategory category = newsCategoryService.update(newsCategoryMapper.requestToNewsCategory(id, request));
 
         return ResponseEntity.ok(newsCategoryMapper.newsCategoryToResponse(category));

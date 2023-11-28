@@ -7,6 +7,7 @@ import com.allitov.newsapi.web.dto.response.news.NewsListResponse;
 import com.allitov.newsapi.web.dto.response.news.NewsResponse;
 import com.allitov.newsapi.web.filter.NewsFilter;
 import com.allitov.newsapi.web.mapper.NewsMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class NewsController {
     private final NewsMapper newsMapper;
 
     @GetMapping("/filter")
-    public ResponseEntity<NewsListResponse> filterBy(NewsFilter filter) {
+    public ResponseEntity<NewsListResponse> filterBy(@Valid NewsFilter filter) {
         return ResponseEntity.ok(newsMapper.newsListToNewsListResponse(newsService.filterBy(filter)));
     }
 
@@ -32,14 +33,14 @@ public class NewsController {
     }
 
     @PostMapping
-    public ResponseEntity<NewsResponse> create(@RequestBody NewsRequest request) {
+    public ResponseEntity<NewsResponse> create(@RequestBody @Valid NewsRequest request) {
         News news = newsService.save(newsMapper.requestToNews(request));
 
         return ResponseEntity.status(HttpStatus.CREATED).body(newsMapper.newsToResponse(news));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<NewsResponse> update(@PathVariable("id") Long id, @RequestBody NewsRequest request) {
+    public ResponseEntity<NewsResponse> update(@PathVariable("id") Long id, @RequestBody @Valid NewsRequest request) {
         News news = newsService.update(newsMapper.requestToNews(id, request));
 
         return ResponseEntity.ok(newsMapper.newsToResponse(news));

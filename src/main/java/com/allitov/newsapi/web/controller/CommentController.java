@@ -7,6 +7,7 @@ import com.allitov.newsapi.web.dto.response.comment.CommentListResponse;
 import com.allitov.newsapi.web.dto.response.comment.CommentResponse;
 import com.allitov.newsapi.web.filter.CommentFilter;
 import com.allitov.newsapi.web.mapper.CommentMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class CommentController {
     private final CommentMapper commentMapper;
 
     @GetMapping("/filter")
-    public ResponseEntity<CommentListResponse> filterBy(CommentFilter filter) {
+    public ResponseEntity<CommentListResponse> filterBy(@Valid CommentFilter filter) {
         return ResponseEntity.ok(commentMapper.commentListToCommentListResponse(commentService.filterBy(filter)));
     }
 
@@ -32,14 +33,14 @@ public class CommentController {
     }
 
     @PostMapping
-    public ResponseEntity<CommentResponse> create(@RequestBody CommentRequest request) {
+    public ResponseEntity<CommentResponse> create(@RequestBody @Valid CommentRequest request) {
         Comment comment = commentService.save(commentMapper.requestToComment(request));
 
         return ResponseEntity.status(HttpStatus.CREATED).body(commentMapper.commentToResponse(comment));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CommentResponse> update(@PathVariable("id") Long id, @RequestBody CommentRequest request) {
+    public ResponseEntity<CommentResponse> update(@PathVariable("id") Long id, @RequestBody @Valid CommentRequest request) {
         Comment comment = commentService.update(commentMapper.requestToComment(id, request));
 
         return ResponseEntity.ok(commentMapper.commentToResponse(comment));
