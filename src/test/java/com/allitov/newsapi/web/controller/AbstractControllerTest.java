@@ -4,6 +4,7 @@ import com.allitov.newsapi.model.data.Comment;
 import com.allitov.newsapi.model.data.News;
 import com.allitov.newsapi.model.data.NewsCategory;
 import com.allitov.newsapi.model.data.User;
+import com.allitov.newsapi.web.dto.response.newscategory.NewsCategoryResponse;
 import com.allitov.newsapi.web.dto.response.user.UserResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,6 +81,13 @@ public abstract class AbstractControllerTest {
                 .name(name)
                 .email(email)
                 .regDate(time)
+                .build();
+    }
+
+    protected NewsCategoryResponse createNewsCategoryResponse(Long id, String name) {
+        return NewsCategoryResponse.builder()
+                .id(id)
+                .name(name)
                 .build();
     }
 }
