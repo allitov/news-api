@@ -9,16 +9,22 @@ import com.allitov.newsapi.web.dto.response.user.UserResponse;
 import com.allitov.newsapi.web.filter.UserFilter;
 import com.allitov.newsapi.web.mapper.UserMapper;
 import jakarta.persistence.EntityNotFoundException;
+import net.bytebuddy.utility.RandomString;
 import net.javacrumbs.jsonunit.JsonAssert;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class UserControllerTest extends AbstractControllerTest {
 
@@ -45,7 +51,7 @@ public class UserControllerTest extends AbstractControllerTest {
         Mockito.verify(userService, Mockito.times(1)).findById(1L);
         Mockito.verify(userMapper, Mockito.times(1)).userToResponse(user);
 
-        String expectedResponse = TestUtils.readStringFromResource("response/user/find_user_by_id_response.json");
+        String expectedResponse = TestUtils.readStringFromResource("response/user/method/find_user_by_id_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
@@ -77,7 +83,7 @@ public class UserControllerTest extends AbstractControllerTest {
         Mockito.verify(userService, Mockito.times(1)).filterBy(filter);
         Mockito.verify(userMapper, Mockito.times(1)).userListToUserResponseList(users);
 
-        String expectedResponse = TestUtils.readStringFromResource("response/user/filter_by_users_response.json");
+        String expectedResponse = TestUtils.readStringFromResource("response/user/method/filter_by_users_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
@@ -108,7 +114,7 @@ public class UserControllerTest extends AbstractControllerTest {
         Mockito.verify(userMapper, Mockito.times(1)).userToResponse(user);
         Mockito.verify(userService, Mockito.times(1)).save(userFromRequest);
 
-        String expectedResponse = TestUtils.readStringFromResource("response/user/create_user_response.json");
+        String expectedResponse = TestUtils.readStringFromResource("response/user/method/create_user_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
@@ -139,7 +145,7 @@ public class UserControllerTest extends AbstractControllerTest {
         Mockito.verify(userMapper, Mockito.times(1)).userToResponse(user);
         Mockito.verify(userService, Mockito.times(1)).update(userFromRequest);
 
-        String expectedResponse = TestUtils.readStringFromResource("response/user/update_user_response.json");
+        String expectedResponse = TestUtils.readStringFromResource("response/user/method/update_user_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
@@ -166,7 +172,7 @@ public class UserControllerTest extends AbstractControllerTest {
 
         Mockito.verify(userService, Mockito.times(1)).findById(500L);
 
-        String expectedResponse = TestUtils.readStringFromResource("response/user/user_by_id_not_found_response.json");
+        String expectedResponse = TestUtils.readStringFromResource("response/user/method/user_by_id_not_found_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
@@ -179,9 +185,132 @@ public class UserControllerTest extends AbstractControllerTest {
                 .post("/api/user")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidUserNameSize")
+    public void whenCreateUserWithInvalidUserNameSize_thenReturnError(String userName) throws Exception {
+        UserRequest request = new UserRequest();
+        request.setUserName(userName);
+        request.setEmail("email@email");
+
+        String actualResponse = mockMvc.perform(MockMvcRequestBuilders
+                .post("/api/user")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
+
+        String expectedResponse = TestUtils.readStringFromResource("response/user/request/invalid_username_size_response.json");
+
+        JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidEmailSize")
+    public void whenCreateUserWithInvalidEmailSize_then_ReturnError(String email) throws Exception {
+        UserRequest request = new UserRequest();
+        request.setUserName("User");
+        request.setEmail(email);
+
+        String actualResponse = mockMvc.perform(MockMvcRequestBuilders
+                .post("/api/user")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        String expectedResponse = TestUtils.readStringFromResource("response/user/request/invalid_user_email_size_response.json");
+
+        JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
+    }
+
+    @Test
+    public void whenFilterWithNullPageSize_thenReturnError() throws Exception {
+        String actualResponse = mockMvc.perform(MockMvcRequestBuilders
+                .get("/api/user/filter?pageNumber=10"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        String expectedResponse = TestUtils.readStringFromResource("response/user/filter/null_user_filter_page_size_response.json");
+
+        JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
+    }
+
+    @Test
+    public void whenFilterWithNullPageNumber_thenReturnError() throws Exception {
+        String actualResponse = mockMvc.perform(MockMvcRequestBuilders
+                .get("/api/user/filter?pageSize=10"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        String expectedResponse = TestUtils.readStringFromResource("response/user/filter/null_user_filter_page_number_response.json");
+
+        JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidPageSize")
+    public void whenFilterWithInvalidPageSize_thenReturnError(Integer pageSize) throws Exception {
+        String actualResponse = mockMvc.perform(MockMvcRequestBuilders
+                .get(MessageFormat.format("/api/user/filter?pageNumber=10&pageSize={0}", pageSize)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        String expectedResponse = TestUtils.readStringFromResource("response/user/filter/invalid_user_filter_page_size_response.json");
+
+        JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidPageNumber")
+    public void whenFilterByInvalidPageNumber_thenReturnError(Integer pageNumber) throws Exception {
+        String actualResponse = mockMvc.perform(MockMvcRequestBuilders
+                .get(MessageFormat.format("/api/user/filter?pageSize=10&pageNumber={0}", pageNumber)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        String expectedResponse = TestUtils.readStringFromResource("response/user/filter/invalid_user_filter_page_number_response.json");
+
+        JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
+    }
+
+    private static Stream<Arguments> invalidUserNameSize() {
+        return Stream.of(
+                Arguments.of(RandomString.make(2)),
+                Arguments.of(RandomString.make(51))
+        );
+    }
+
+    private static Stream<Arguments> invalidEmailSize() {
+        return Stream.of(
+                Arguments.of(RandomString.make(2)),
+                Arguments.of(RandomString.make(256))
+        );
+    }
+
+    private static Stream<Arguments> invalidPageSize() {
+        return Stream.of(
+                Arguments.arguments(-1, 0)
+        );
+    }
+
+    private static Stream<Arguments> invalidPageNumber() {
+        return Stream.of(
+                Arguments.arguments(-1, -10000)
+        );
     }
 }
