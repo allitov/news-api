@@ -9,8 +9,12 @@ import com.allitov.newsapi.web.dto.response.newscategory.NewsCategoryResponse;
 import com.allitov.newsapi.web.filter.NewsCategoryFilter;
 import com.allitov.newsapi.web.mapper.NewsCategoryMapper;
 import jakarta.persistence.EntityNotFoundException;
+import net.bytebuddy.utility.RandomString;
 import net.javacrumbs.jsonunit.JsonAssert;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -19,6 +23,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class NewsCategoryControllerTest extends AbstractControllerTest {
 
@@ -166,5 +171,60 @@ public class NewsCategoryControllerTest extends AbstractControllerTest {
         String expectedResponse = TestUtils.readStringFromResource("response/newscategory/method/news_category_by_id_not_found_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
+    }
+
+    @ParameterizedTest
+    @MethodSource("blankNewsCategoryName")
+    public void whenCreateNewsCategoryWithBlankName_thenReturnError(String name) throws Exception {
+        NewsCategoryRequest request = new NewsCategoryRequest();
+        request.setName(name);
+
+        String actualResponse = mockMvc.perform(MockMvcRequestBuilders
+                .post("/api/news_category")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        String expectedResponse = TestUtils.readStringFromResource("response/newscategory/request/blank_news_category_name_response.json");
+
+        JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidNewsCategoryNameSize")
+    public void whenCreateNewsCategoryWithInvalidNameSize_thenReturnError(String name) throws Exception {
+        NewsCategoryRequest request = new NewsCategoryRequest();
+        request.setName(name);
+
+        String actualResponse = mockMvc.perform(MockMvcRequestBuilders
+                .post("/api/news_category")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        String expectedResponse = TestUtils.readStringFromResource("response/newscategory/request/invalid_news_category_name_size.json");
+
+        JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
+    }
+
+    private static Stream<Arguments> blankNewsCategoryName() {
+        return Stream.of(
+                null,
+                Arguments.of(" "),
+                Arguments.of("")
+        );
+    }
+
+    private static Stream<Arguments> invalidNewsCategoryNameSize() {
+        return Stream.of(
+                Arguments.of(RandomString.make(51)),
+                Arguments.of(RandomString.make(100))
+        );
     }
 }
