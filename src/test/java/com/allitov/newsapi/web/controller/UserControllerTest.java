@@ -304,13 +304,15 @@ public class UserControllerTest extends AbstractControllerTest {
 
     private static Stream<Arguments> invalidPageSize() {
         return Stream.of(
-                Arguments.arguments(-1, 0)
+                Arguments.of(-1),
+                Arguments.of(0)
         );
     }
 
     private static Stream<Arguments> invalidPageNumber() {
         return Stream.of(
-                Arguments.arguments(-1, -10000)
+                Arguments.of(-1),
+                Arguments.of(-10000)
         );
     }
 }
