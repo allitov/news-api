@@ -4,6 +4,7 @@ import com.allitov.newsapi.model.data.Comment;
 import com.allitov.newsapi.model.data.News;
 import com.allitov.newsapi.model.data.NewsCategory;
 import com.allitov.newsapi.model.data.User;
+import com.allitov.newsapi.web.dto.response.comment.CommentResponse;
 import com.allitov.newsapi.web.dto.response.newscategory.NewsCategoryResponse;
 import com.allitov.newsapi.web.dto.response.user.UserResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -64,12 +65,10 @@ public abstract class AbstractControllerTest {
                 .build();
     }
 
-    protected Comment createComment(Long id, String content, User author, News news) {
+    protected Comment createComment(Long id, String content) {
         return Comment.builder()
                 .id(id)
                 .content(content)
-                .author(author)
-                .news(news)
                 .creationDate(time)
                 .lastUpdate(time)
                 .build();
@@ -88,6 +87,17 @@ public abstract class AbstractControllerTest {
         return NewsCategoryResponse.builder()
                 .id(id)
                 .name(name)
+                .build();
+    }
+
+    protected CommentResponse createCommentResponse(Long id, String content, Long authorId, Long newsId) {
+        return CommentResponse.builder()
+                .id(id)
+                .content(content)
+                .authorId(authorId)
+                .newsId(newsId)
+                .creationDate(time)
+                .lastUpdate(time)
                 .build();
     }
 }
