@@ -2,7 +2,6 @@ package com.allitov.newsapi.web.mapper;
 
 import com.allitov.newsapi.model.data.News;
 import com.allitov.newsapi.web.dto.request.news.NewsRequest;
-import com.allitov.newsapi.web.dto.response.news.NewsData;
 import com.allitov.newsapi.web.dto.response.news.NewsListResponse;
 import com.allitov.newsapi.web.dto.response.news.NewsResponse;
 import com.allitov.newsapi.web.dto.response.news.NewsWithCommentsCount;
@@ -23,8 +22,6 @@ public interface NewsMapper {
 
     @Mapping(source = "newsId", target = "id")
     News requestToNews(Long newsId, NewsRequest request);
-
-    NewsData newsToNewsData(News news);
 
     NewsResponse newsToResponse(News news);
 

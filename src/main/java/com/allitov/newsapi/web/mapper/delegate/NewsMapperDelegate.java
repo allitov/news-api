@@ -4,7 +4,6 @@ import com.allitov.newsapi.model.data.News;
 import com.allitov.newsapi.model.service.NewsCategoryService;
 import com.allitov.newsapi.model.service.UserService;
 import com.allitov.newsapi.web.dto.request.news.NewsRequest;
-import com.allitov.newsapi.web.dto.response.news.NewsData;
 import com.allitov.newsapi.web.dto.response.news.NewsResponse;
 import com.allitov.newsapi.web.dto.response.news.NewsWithCommentsCount;
 import com.allitov.newsapi.web.mapper.CommentMapper;
@@ -40,30 +39,28 @@ public abstract class NewsMapperDelegate implements NewsMapper {
     }
 
     @Override
-    public NewsData newsToNewsData(News news) {
-        return NewsData.builder()
+    public NewsResponse newsToResponse(News news) {
+        return NewsResponse.builder()
                 .id(news.getId())
                 .content(news.getContent())
                 .authorId(news.getAuthor().getId())
                 .categoryId(news.getCategory().getId())
                 .creationDate(news.getCreationDate())
                 .lastUpdate(news.getLastUpdate())
+                .comments(commentMapper.commentListToResponseList(news.getComments()))
                 .build();
     }
 
-    @Override
-    public NewsResponse newsToResponse(News news) {
-        NewsResponse response = new NewsResponse();
-        response.setNews(newsToNewsData(news));
-        response.setComments(commentMapper.commentListToCommentListResponse(news.getComments()));
-
-        return response;
-    }
 
     @Override
     public NewsWithCommentsCount newsToNewsWithCommentsCount(News news) {
         NewsWithCommentsCount newsWithCommentsCount = new NewsWithCommentsCount();
-        newsWithCommentsCount.setNews(newsToNewsData(news));
+        newsWithCommentsCount.setId(news.getId());
+        newsWithCommentsCount.setContent(news.getContent());
+        newsWithCommentsCount.setAuthorId(news.getAuthor().getId());
+        newsWithCommentsCount.setCategoryId(news.getCategory().getId());
+        newsWithCommentsCount.setCreationDate(news.getCreationDate());
+        newsWithCommentsCount.setLastUpdate(news.getLastUpdate());
         newsWithCommentsCount.setCommentsCount(news.getComments().size());
 
         return newsWithCommentsCount;
