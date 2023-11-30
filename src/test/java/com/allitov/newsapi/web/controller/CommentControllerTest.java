@@ -11,14 +11,19 @@ import com.allitov.newsapi.web.mapper.CommentMapper;
 import jakarta.persistence.EntityNotFoundException;
 import net.javacrumbs.jsonunit.JsonAssert;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class CommentControllerTest extends AbstractControllerTest {
 
@@ -169,5 +174,41 @@ public class CommentControllerTest extends AbstractControllerTest {
         String expectedResponse = TestUtils.readStringFromResource("response/comment/method/comment_by_id_not_found_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
+    }
+
+    @Test
+    public void whenFilterByNullNewsId_thenReturnError() throws Exception {
+        String actualResponse = mockMvc.perform(MockMvcRequestBuilders
+                .get("/api/comment/filter"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        String expectedResponse = TestUtils.readStringFromResource("response/comment/filter/null_comment_filter_news_id_response.json");
+
+        JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidNewsId")
+    public void whenFilterByInvalidNewsId_thenReturnError(Integer newsId) throws Exception {
+        String actualResponse = mockMvc.perform(MockMvcRequestBuilders
+                .get(MessageFormat.format("/api/comment/filter?newsId={0}", newsId)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        String expectedResponse = TestUtils.readStringFromResource("response/comment/filter/invalid_comment_filter_news_id.json");
+
+        JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
+    }
+
+    private static Stream<Arguments> invalidNewsId() {
+        return Stream.of(
+                Arguments.of(-1),
+                Arguments.of(0)
+        );
     }
 }
