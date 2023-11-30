@@ -192,7 +192,7 @@ public class CommentControllerTest extends AbstractControllerTest {
 
     @ParameterizedTest
     @MethodSource("invalidNewsId")
-    public void whenFilterByInvalidNewsId_thenReturnError(Integer newsId) throws Exception {
+    public void whenFilterByInvalidNewsId_thenReturnError(Long newsId) throws Exception {
         String actualResponse = mockMvc.perform(MockMvcRequestBuilders
                 .get(MessageFormat.format("/api/comment/filter?newsId={0}", newsId)))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -205,10 +205,133 @@ public class CommentControllerTest extends AbstractControllerTest {
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
 
+    @Test
+    public void whenCreateCommentWithNullAuthorId_thenReturnError() throws Exception {
+        CommentRequest request = new CommentRequest();
+        request.setAuthorId(null);
+        request.setNewsId(1L);
+        request.setContent("content");
+
+        String actualResponse = mockMvc.perform(MockMvcRequestBuilders
+                .post("/api/comment")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        String expectedResponse = TestUtils.readStringFromResource("response/comment/request/null_author_id_response.json");
+
+        JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
+    }
+
+    @Test
+    public void whenCreateCommentWithNullNewsId_thenReturnError() throws Exception {
+        CommentRequest request = new CommentRequest();
+        request.setAuthorId(1L);
+        request.setNewsId(null);
+        request.setContent("content");
+
+        String actualResponse = mockMvc.perform(MockMvcRequestBuilders
+                .post("/api/comment")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        String expectedResponse = TestUtils.readStringFromResource("response/comment/request/null_news_id_response.json");
+
+        JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
+    }
+
+    @ParameterizedTest
+    @MethodSource("blankContent")
+    public void whenCreateCommentWithBlankContent_thenReturnError(String content) throws Exception {
+        CommentRequest request = new CommentRequest();
+        request.setAuthorId(1L);
+        request.setNewsId(1L);
+        request.setContent(content);
+
+        String actualResponse = mockMvc.perform(MockMvcRequestBuilders
+                .post("/api/comment")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        String expectedResponse = TestUtils.readStringFromResource("response/comment/request/blank_content_response.json");
+
+        JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidAuthorId")
+    public void whenCreateCommentWithInvalidAuthorId_thenReturnError(Long authorId) throws Exception {
+        CommentRequest request = new CommentRequest();
+        request.setAuthorId(authorId);
+        request.setNewsId(1L);
+        request.setContent("content");
+
+        String actualResponse = mockMvc.perform(MockMvcRequestBuilders
+                .post("/api/comment")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        String expectedResponse = TestUtils.readStringFromResource("response/comment/request/invalid_author_id_response.json");
+
+        JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidNewsId")
+    public void whenCreateCommentWithInvalidNewsId_thenReturnError(Long newsId) throws Exception {
+        CommentRequest request = new CommentRequest();
+        request.setAuthorId(1L);
+        request.setNewsId(newsId);
+        request.setContent("content");
+
+        String actualResponse = mockMvc.perform(MockMvcRequestBuilders
+                .post("/api/comment")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        String expectedResponse = TestUtils.readStringFromResource("response/comment/request/invalid_news_id_response.json");
+
+        JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
+    }
+
     private static Stream<Arguments> invalidNewsId() {
         return Stream.of(
-                Arguments.of(-1),
-                Arguments.of(0)
+                Arguments.of(-1L),
+                Arguments.of(0L)
+        );
+    }
+
+    private static Stream<Arguments> blankContent() {
+        return Stream.of(
+                null,
+                Arguments.of(""),
+                Arguments.of(" ")
+        );
+    }
+
+    private static Stream<Arguments> invalidAuthorId() {
+        return Stream.of(
+                Arguments.of(-100L),
+                Arguments.of(0L)
         );
     }
 }
