@@ -5,6 +5,8 @@ import com.allitov.newsapi.model.data.News;
 import com.allitov.newsapi.model.data.NewsCategory;
 import com.allitov.newsapi.model.data.User;
 import com.allitov.newsapi.web.dto.response.comment.CommentResponse;
+import com.allitov.newsapi.web.dto.response.news.NewsResponse;
+import com.allitov.newsapi.web.dto.response.news.NewsWithCommentsCount;
 import com.allitov.newsapi.web.dto.response.newscategory.NewsCategoryResponse;
 import com.allitov.newsapi.web.dto.response.user.UserResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,25 +39,13 @@ public abstract class AbstractControllerTest {
                 .build();
     }
 
-    protected News createNews(Long id, String content, User author,
-                              NewsCategory category, List<Comment> comments) {
-        News news = News.builder()
+    protected News createNews(Long id, String content) {
+        return News.builder()
                 .id(id)
                 .content(content)
                 .creationDate(time)
                 .lastUpdate(time)
-                .author(author)
-                .category(category)
                 .build();
-
-        if (comments != null) {
-            comments.forEach(c -> {
-                news.addComment(c);
-                c.setNews(news);
-            });
-        }
-
-        return news;
     }
 
     protected NewsCategory createNewsCategory(Long id, String name) {
@@ -98,6 +88,32 @@ public abstract class AbstractControllerTest {
                 .newsId(newsId)
                 .creationDate(time)
                 .lastUpdate(time)
+                .build();
+    }
+
+    protected NewsResponse createNewsResponse(Long id, String content, Long authorId,
+                                              Long categoryId, List<CommentResponse> commentResponses) {
+        return NewsResponse.builder()
+                .id(id)
+                .content(content)
+                .authorId(authorId)
+                .categoryId(categoryId)
+                .creationDate(time)
+                .lastUpdate(time)
+                .comments(commentResponses)
+                .build();
+    }
+
+    protected NewsWithCommentsCount createNewsWithCommentsCount(Long id, String content, Long authorId,
+                                                                Long categoryId, Integer commentsCount) {
+        return NewsWithCommentsCount.builder()
+                .id(id)
+                .content(content)
+                .authorId(authorId)
+                .categoryId(categoryId)
+                .creationDate(time)
+                .lastUpdate(time)
+                .commentsCount(commentsCount)
                 .build();
     }
 }

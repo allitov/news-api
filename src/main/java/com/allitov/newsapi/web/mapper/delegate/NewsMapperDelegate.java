@@ -54,15 +54,14 @@ public abstract class NewsMapperDelegate implements NewsMapper {
 
     @Override
     public NewsWithCommentsCount newsToNewsWithCommentsCount(News news) {
-        NewsWithCommentsCount newsWithCommentsCount = new NewsWithCommentsCount();
-        newsWithCommentsCount.setId(news.getId());
-        newsWithCommentsCount.setContent(news.getContent());
-        newsWithCommentsCount.setAuthorId(news.getAuthor().getId());
-        newsWithCommentsCount.setCategoryId(news.getCategory().getId());
-        newsWithCommentsCount.setCreationDate(news.getCreationDate());
-        newsWithCommentsCount.setLastUpdate(news.getLastUpdate());
-        newsWithCommentsCount.setCommentsCount(news.getComments().size());
-
-        return newsWithCommentsCount;
+        return NewsWithCommentsCount.builder()
+                .id(news.getId())
+                .content(news.getContent())
+                .authorId(news.getAuthor().getId())
+                .categoryId(news.getCategory().getId())
+                .creationDate(news.getCreationDate())
+                .lastUpdate(news.getLastUpdate())
+                .commentsCount(news.getComments().size())
+                .build();
     }
 }
