@@ -22,6 +22,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -289,6 +290,64 @@ public class NewsControllerTest extends AbstractControllerTest {
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
 
+    @Test
+    public void whenFilterByNullPageNumber_thenReturnError() throws Exception {
+        String actualResponse = mockMvc.perform(MockMvcRequestBuilders
+                .get("/api/news/filter?pageSize=10"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        String expectedResponse = TestUtils.readStringFromResource("response/news/filter/null_news_filter_page_number_response.json");
+
+        JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
+    }
+
+    @Test
+    public void whenFilterByNullPageSize_thenReturnError() throws Exception {
+        String actualResponse = mockMvc.perform(MockMvcRequestBuilders
+                .get("/api/news/filter?pageNumber=10"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        String expectedResponse = TestUtils.readStringFromResource("response/news/filter/null_news_filter_page_size_response.json");
+
+        JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidPageNumber")
+    public void whenFilterByInvalidPageNumber_thenReturnError(Integer pageNumber) throws Exception {
+        String actualResponse = mockMvc.perform(MockMvcRequestBuilders
+                .get(MessageFormat.format("/api/news/filter?pageSize=10&pageNumber={0}", pageNumber)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        String expectedResponse = TestUtils.readStringFromResource("response/news/filter/invalid_news_filter_page_number_response.json");
+
+        JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidPageSize")
+    public void whenFilterByInvalidPageSize_thenReturnError(Integer pageSize) throws Exception {
+        String actualResponse = mockMvc.perform(MockMvcRequestBuilders
+                .get(MessageFormat.format("/api/news/filter?pageNumber=10&pageSize={0}", pageSize)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        String expectedResponse = TestUtils.readStringFromResource("response/news/filter/invalid_news_filter_page_size_response.json");
+
+        JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
+    }
+
     private static Stream<Arguments> blankContent() {
         return Stream.of(
                 null,
@@ -308,6 +367,20 @@ public class NewsControllerTest extends AbstractControllerTest {
         return Stream.of(
                 Arguments.of(0L),
                 Arguments.of(-40L)
+        );
+    }
+
+    private static Stream<Arguments> invalidPageSize() {
+        return Stream.of(
+                Arguments.of(0),
+                Arguments.of(-50)
+        );
+    }
+
+    private static Stream<Arguments> invalidPageNumber() {
+        return Stream.of(
+                Arguments.of(-1),
+                Arguments.of(-50)
         );
     }
 }
