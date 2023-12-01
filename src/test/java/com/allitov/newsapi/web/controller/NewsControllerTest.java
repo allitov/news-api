@@ -22,7 +22,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -322,7 +321,7 @@ public class NewsControllerTest extends AbstractControllerTest {
     @MethodSource("invalidPageNumber")
     public void whenFilterByInvalidPageNumber_thenReturnError(Integer pageNumber) throws Exception {
         String actualResponse = mockMvc.perform(MockMvcRequestBuilders
-                .get(MessageFormat.format("/api/news/filter?pageSize=10&pageNumber={0}", pageNumber)))
+                .get(String.format("/api/news/filter?pageSize=10&pageNumber=%d", pageNumber)))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
                 .andReturn()
                 .getResponse()
@@ -337,7 +336,7 @@ public class NewsControllerTest extends AbstractControllerTest {
     @MethodSource("invalidPageSize")
     public void whenFilterByInvalidPageSize_thenReturnError(Integer pageSize) throws Exception {
         String actualResponse = mockMvc.perform(MockMvcRequestBuilders
-                .get(MessageFormat.format("/api/news/filter?pageNumber=10&pageSize={0}", pageSize)))
+                .get(String.format("/api/news/filter?pageNumber=10&pageSize=%d", pageSize)))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
                 .andReturn()
                 .getResponse()

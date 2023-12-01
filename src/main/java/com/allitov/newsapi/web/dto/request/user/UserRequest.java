@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class UserRequest {
 
-    @NotBlank(message = "Name must be specified")
+    @NotBlank(message = "User name must be specified")
     @Size(min = 3, max = 50, message = "Username length must be {min} <= length <= {max}")
     private String userName;
 

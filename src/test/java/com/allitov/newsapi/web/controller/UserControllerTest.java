@@ -21,7 +21,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -177,15 +176,46 @@ public class UserControllerTest extends AbstractControllerTest {
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
 
-    @Test
-    public void whenCreateUserWithEmptyRequest_thenReturnError() throws Exception {
+    @ParameterizedTest
+    @MethodSource("blankEmail")
+    public void whenCreateUserWithBlankEmail_thenReturnError(String email) throws Exception {
         UserRequest request = new UserRequest();
+        request.setUserName("name");
+        request.setEmail(email);
 
-        mockMvc.perform(MockMvcRequestBuilders
+        String actualResponse = mockMvc.perform(MockMvcRequestBuilders
                 .post("/api/user")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        String expectedResponse = TestUtils.readStringFromResource("response/user/request/blank_user_email_response.json");
+
+        JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
+    }
+
+    @ParameterizedTest
+    @MethodSource("blankUserName")
+    public void whenCreateUserWithBlankUserName_thenReturnError(String userName) throws Exception {
+        UserRequest request = new UserRequest();
+        request.setUserName(userName);
+        request.setEmail("email@email");
+
+        String actualResponse = mockMvc.perform(MockMvcRequestBuilders
+                .post("/api/user")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        String expectedResponse = TestUtils.readStringFromResource("response/user/request/blank_username_response.json");
+
+        JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
 
     @ParameterizedTest
@@ -262,7 +292,7 @@ public class UserControllerTest extends AbstractControllerTest {
     @MethodSource("invalidPageSize")
     public void whenFilterWithInvalidPageSize_thenReturnError(Integer pageSize) throws Exception {
         String actualResponse = mockMvc.perform(MockMvcRequestBuilders
-                .get(MessageFormat.format("/api/user/filter?pageNumber=10&pageSize={0}", pageSize)))
+                .get(String.format("/api/user/filter?pageNumber=10&pageSize=%d", pageSize)))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
                 .andReturn()
                 .getResponse()
@@ -277,7 +307,7 @@ public class UserControllerTest extends AbstractControllerTest {
     @MethodSource("invalidPageNumber")
     public void whenFilterByInvalidPageNumber_thenReturnError(Integer pageNumber) throws Exception {
         String actualResponse = mockMvc.perform(MockMvcRequestBuilders
-                .get(MessageFormat.format("/api/user/filter?pageSize=10&pageNumber={0}", pageNumber)))
+                .get(String.format("/api/user/filter?pageSize=10&pageNumber=%d", pageNumber)))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
                 .andReturn()
                 .getResponse()
@@ -312,7 +342,23 @@ public class UserControllerTest extends AbstractControllerTest {
     private static Stream<Arguments> invalidPageNumber() {
         return Stream.of(
                 Arguments.of(-1),
-                Arguments.of(-50)
+                Arguments.of(-10000)
+        );
+    }
+
+    private static Stream<Arguments> blankEmail() {
+        return Stream.of(
+                null,
+                Arguments.of("   "),
+                Arguments.of("      ")
+        );
+    }
+
+    private static Stream<Arguments> blankUserName() {
+        return Stream.of(
+                null,
+                Arguments.of("    "),
+                Arguments.of("\n   ")
         );
     }
 }

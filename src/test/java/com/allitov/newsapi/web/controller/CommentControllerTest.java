@@ -20,7 +20,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -194,7 +193,7 @@ public class CommentControllerTest extends AbstractControllerTest {
     @MethodSource("invalidNewsId")
     public void whenFilterByInvalidNewsId_thenReturnError(Long newsId) throws Exception {
         String actualResponse = mockMvc.perform(MockMvcRequestBuilders
-                .get(MessageFormat.format("/api/comment/filter?newsId={0}", newsId)))
+                .get(String.format("/api/comment/filter?newsId=%d", newsId)))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
                 .andReturn()
                 .getResponse()
