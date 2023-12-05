@@ -275,7 +275,7 @@ public class NewsCategoryControllerTest extends AbstractControllerTest {
         return Stream.of(
                 null,
                 Arguments.of(" "),
-                Arguments.of("")
+                Arguments.of("\n ")
         );
     }
 
