@@ -38,8 +38,10 @@ public class NewsCategoryControllerTest extends AbstractControllerTest {
         NewsCategory category = createNewsCategory(1L, "Category");
         NewsCategoryResponse response = createNewsCategoryResponse(1L, "Category");
 
-        Mockito.when(categoryService.findById(1L)).thenReturn(category);
-        Mockito.when(categoryMapper.newsCategoryToResponse(category)).thenReturn(response);
+        Mockito.when(categoryService.findById(1L))
+                .thenReturn(category);
+        Mockito.when(categoryMapper.newsCategoryToResponse(category))
+                .thenReturn(response);
 
         String actualResponse = mockMvc.perform(MockMvcRequestBuilders
                 .get("/api/news_category/1"))
@@ -48,10 +50,13 @@ public class NewsCategoryControllerTest extends AbstractControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        Mockito.verify(categoryService, Mockito.times(1)).findById(1L);
-        Mockito.verify(categoryMapper, Mockito.times(1)).newsCategoryToResponse(category);
+        Mockito.verify(categoryService, Mockito.times(1))
+                .findById(1L);
+        Mockito.verify(categoryMapper, Mockito.times(1))
+                .newsCategoryToResponse(category);
 
-        String expectedResponse = TestUtils.readStringFromResource("response/newscategory/method/find_news_category_by_id_response.json");
+        String expectedResponse = TestUtils.readStringFromResource(
+                "response/newscategory/method/find_news_category_by_id_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
@@ -70,8 +75,10 @@ public class NewsCategoryControllerTest extends AbstractControllerTest {
         filter.setPageNumber(0);
         filter.setPageSize(10);
 
-        Mockito.when(categoryService.filterBy(filter)).thenReturn(categories);
-        Mockito.when(categoryMapper.newsCategoryListToNewsCategoryListResponse(categories)).thenReturn(response);
+        Mockito.when(categoryService.filterBy(filter))
+                .thenReturn(categories);
+        Mockito.when(categoryMapper.newsCategoryListToNewsCategoryListResponse(categories))
+                .thenReturn(response);
 
         String actualResponse = mockMvc.perform(MockMvcRequestBuilders
                 .get("/api/news_category/filter?pageNumber=0&pageSize=10"))
@@ -80,10 +87,13 @@ public class NewsCategoryControllerTest extends AbstractControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        Mockito.verify(categoryService, Mockito.times(1)).filterBy(filter);
-        Mockito.verify(categoryMapper, Mockito.times(1)).newsCategoryListToNewsCategoryListResponse(categories);
+        Mockito.verify(categoryService, Mockito.times(1))
+                .filterBy(filter);
+        Mockito.verify(categoryMapper, Mockito.times(1))
+                .newsCategoryListToNewsCategoryListResponse(categories);
 
-        String expectedResponse = TestUtils.readStringFromResource("response/newscategory/method/filter_by_news_category_response.json");
+        String expectedResponse = TestUtils.readStringFromResource(
+                "response/newscategory/method/filter_by_news_category_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
@@ -95,9 +105,12 @@ public class NewsCategoryControllerTest extends AbstractControllerTest {
         NewsCategoryRequest request = new NewsCategoryRequest();
         request.setName("Created Category");
 
-        Mockito.when(categoryMapper.requestToNewsCategory(request)).thenReturn(category);
-        Mockito.when(categoryMapper.newsCategoryToResponse(category)).thenReturn(response);
-        Mockito.when(categoryService.save(category)).thenReturn(category);
+        Mockito.when(categoryMapper.requestToNewsCategory(request))
+                .thenReturn(category);
+        Mockito.when(categoryMapper.newsCategoryToResponse(category))
+                .thenReturn(response);
+        Mockito.when(categoryService.save(category))
+                .thenReturn(category);
 
         String actualResponse = mockMvc.perform(MockMvcRequestBuilders
                 .post("/api/news_category")
@@ -108,11 +121,15 @@ public class NewsCategoryControllerTest extends AbstractControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        Mockito.verify(categoryMapper, Mockito.times(1)).requestToNewsCategory(request);
-        Mockito.verify(categoryMapper, Mockito.times(1)).newsCategoryToResponse(category);
-        Mockito.verify(categoryService, Mockito.times(1)).save(category);
+        Mockito.verify(categoryMapper, Mockito.times(1))
+                .requestToNewsCategory(request);
+        Mockito.verify(categoryMapper, Mockito.times(1))
+                .newsCategoryToResponse(category);
+        Mockito.verify(categoryService, Mockito.times(1))
+                .save(category);
 
-        String expectedResponse = TestUtils.readStringFromResource("response/newscategory/method/create_news_category_response.json");
+        String expectedResponse = TestUtils.readStringFromResource(
+                "response/newscategory/method/create_news_category_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
@@ -124,9 +141,12 @@ public class NewsCategoryControllerTest extends AbstractControllerTest {
         NewsCategoryRequest request = new NewsCategoryRequest();
         request.setName("Updated Category");
 
-        Mockito.when(categoryMapper.requestToNewsCategory(1L, request)).thenReturn(category);
-        Mockito.when(categoryMapper.newsCategoryToResponse(category)).thenReturn(response);
-        Mockito.when(categoryService.update(category)).thenReturn(category);
+        Mockito.when(categoryMapper.requestToNewsCategory(1L, request))
+                .thenReturn(category);
+        Mockito.when(categoryMapper.newsCategoryToResponse(category))
+                .thenReturn(response);
+        Mockito.when(categoryService.update(category))
+                .thenReturn(category);
 
         String actualResponse = mockMvc.perform(MockMvcRequestBuilders
                 .put("/api/news_category/1")
@@ -137,11 +157,15 @@ public class NewsCategoryControllerTest extends AbstractControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        Mockito.verify(categoryMapper, Mockito.times(1)).requestToNewsCategory(1L, request);
-        Mockito.verify(categoryMapper, Mockito.times(1)).newsCategoryToResponse(category);
-        Mockito.verify(categoryService, Mockito.times(1)).update(category);
+        Mockito.verify(categoryMapper, Mockito.times(1))
+                .requestToNewsCategory(1L, request);
+        Mockito.verify(categoryMapper, Mockito.times(1))
+                .newsCategoryToResponse(category);
+        Mockito.verify(categoryService, Mockito.times(1))
+                .update(category);
 
-        String expectedResponse = TestUtils.readStringFromResource("response/newscategory/method/update_news_category_response.json");
+        String expectedResponse = TestUtils.readStringFromResource(
+                "response/newscategory/method/update_news_category_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
@@ -152,12 +176,14 @@ public class NewsCategoryControllerTest extends AbstractControllerTest {
                 .delete("/api/news_category/500"))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
 
-        Mockito.verify(categoryService, Mockito.times(1)).deleteById(500L);
+        Mockito.verify(categoryService, Mockito.times(1))
+                .deleteById(500L);
     }
 
     @Test
     public void whenFindByIdNotExistedNewsCategory_thenReturnError() throws Exception {
-        Mockito.when(categoryService.findById(500L)).thenThrow(new EntityNotFoundException("News category with id 500 not found"));
+        Mockito.when(categoryService.findById(500L))
+                .thenThrow(new EntityNotFoundException("News category with id 500 not found"));
 
         String actualResponse = mockMvc.perform(MockMvcRequestBuilders
                 .get("/api/news_category/500"))
@@ -166,9 +192,11 @@ public class NewsCategoryControllerTest extends AbstractControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        Mockito.verify(categoryService, Mockito.times(1)).findById(500L);
+        Mockito.verify(categoryService, Mockito.times(1))
+                .findById(500L);
 
-        String expectedResponse = TestUtils.readStringFromResource("response/newscategory/method/news_category_by_id_not_found_response.json");
+        String expectedResponse = TestUtils.readStringFromResource(
+                "response/newscategory/method/news_category_by_id_not_found_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
@@ -188,7 +216,8 @@ public class NewsCategoryControllerTest extends AbstractControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        String expectedResponse = TestUtils.readStringFromResource("response/newscategory/request/blank_news_category_name_response.json");
+        String expectedResponse = TestUtils.readStringFromResource(
+                "response/newscategory/request/blank_news_category_name_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
@@ -208,7 +237,8 @@ public class NewsCategoryControllerTest extends AbstractControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        String expectedResponse = TestUtils.readStringFromResource("response/newscategory/request/invalid_news_category_name_size.json");
+        String expectedResponse = TestUtils.readStringFromResource(
+                "response/newscategory/request/invalid_news_category_name_size.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
@@ -222,7 +252,8 @@ public class NewsCategoryControllerTest extends AbstractControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        String expectedResponse = TestUtils.readStringFromResource("response/newscategory/filter/null_news_category_filter_page_size_response.json");
+        String expectedResponse = TestUtils.readStringFromResource(
+                "response/newscategory/filter/null_news_category_filter_page_size_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
@@ -236,7 +267,8 @@ public class NewsCategoryControllerTest extends AbstractControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        String expectedResponse = TestUtils.readStringFromResource("response/newscategory/filter/null_news_category_filter_page_number_response.json");
+        String expectedResponse = TestUtils.readStringFromResource(
+                "response/newscategory/filter/null_news_category_filter_page_number_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
@@ -251,7 +283,8 @@ public class NewsCategoryControllerTest extends AbstractControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        String expectedResponse = TestUtils.readStringFromResource("response/newscategory/filter/invlaid_news_category_filter_page_size_response.json");
+        String expectedResponse = TestUtils.readStringFromResource(
+                "response/newscategory/filter/invlaid_news_category_filter_page_size_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
@@ -266,7 +299,8 @@ public class NewsCategoryControllerTest extends AbstractControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        String expectedResponse = TestUtils.readStringFromResource("response/newscategory/filter/invalid_news_category_filter_page_number_response.json");
+        String expectedResponse = TestUtils.readStringFromResource(
+                "response/newscategory/filter/invalid_news_category_filter_page_number_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }

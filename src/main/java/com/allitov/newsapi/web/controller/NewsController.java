@@ -1,5 +1,6 @@
 package com.allitov.newsapi.web.controller;
 
+import com.allitov.newsapi.aop.Changeable;
 import com.allitov.newsapi.model.data.News;
 import com.allitov.newsapi.model.service.NewsService;
 import com.allitov.newsapi.web.dto.request.news.NewsRequest;
@@ -151,7 +152,10 @@ public class NewsController {
             )
     })
     @PutMapping("/{id}")
-    public ResponseEntity<NewsResponse> update(@PathVariable("id") Long id, @RequestBody @Valid NewsRequest request) {
+    @Changeable
+    public ResponseEntity<NewsResponse> update(@PathVariable("id") Long id,
+                                               @RequestParam("userId") Long userId,
+                                               @RequestBody @Valid NewsRequest request) {
         News news = newsService.update(newsMapper.requestToNews(id, request));
 
         return ResponseEntity.ok(newsMapper.newsToResponse(news));
@@ -170,7 +174,9 @@ public class NewsController {
             )
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable("id") Long id) {
+    @Changeable
+    public ResponseEntity<Void> deleteById(@PathVariable("id") Long id,
+                                           @RequestParam("userId") Long userId) {
         newsService.deleteById(id);
 
         return ResponseEntity.noContent().build();

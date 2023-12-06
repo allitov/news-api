@@ -1,5 +1,6 @@
 package com.allitov.newsapi.web.controller;
 
+import com.allitov.newsapi.aop.Changeable;
 import com.allitov.newsapi.model.data.Comment;
 import com.allitov.newsapi.model.service.CommentService;
 import com.allitov.newsapi.web.dto.request.comment.CommentRequest;
@@ -151,7 +152,9 @@ public class CommentController {
             )
     })
     @PutMapping("/{id}")
+    @Changeable
     public ResponseEntity<CommentResponse> update(@PathVariable("id") Long id,
+                                                  @RequestParam("userId") Long userId,
                                                   @RequestBody @Valid CommentRequest request) {
         Comment comment = commentService.update(commentMapper.requestToComment(id, request));
 
@@ -171,7 +174,9 @@ public class CommentController {
             )
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable("id") Long id) {
+    @Changeable
+    public ResponseEntity<Void> deleteById(@PathVariable("id") Long id,
+                                           @RequestParam("userId") Long userId) {
         commentService.deleteById(id);
 
         return ResponseEntity.noContent().build();

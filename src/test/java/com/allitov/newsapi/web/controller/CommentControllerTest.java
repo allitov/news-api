@@ -37,8 +37,10 @@ public class CommentControllerTest extends AbstractControllerTest {
         CommentResponse response = createCommentResponse(1L, "content", 1L, 1L);
         Comment comment = createComment(1L, "content");
 
-        Mockito.when(commentService.findById(1L)).thenReturn(comment);
-        Mockito.when(commentMapper.commentToResponse(comment)).thenReturn(response);
+        Mockito.when(commentService.findById(1L))
+                .thenReturn(comment);
+        Mockito.when(commentMapper.commentToResponse(comment))
+                .thenReturn(response);
 
         String actualResponse = mockMvc.perform(MockMvcRequestBuilders
                 .get("/api/comment/1"))
@@ -47,10 +49,13 @@ public class CommentControllerTest extends AbstractControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        Mockito.verify(commentService, Mockito.times(1)).findById(1L);
-        Mockito.verify(commentMapper, Mockito.times(1)).commentToResponse(comment);
+        Mockito.verify(commentService, Mockito.times(1))
+                .findById(1L);
+        Mockito.verify(commentMapper, Mockito.times(1))
+                .commentToResponse(comment);
 
-        String expectedResponse = TestUtils.readStringFromResource("response/comment/method/find_comment_by_id_response.json");
+        String expectedResponse = TestUtils.readStringFromResource(
+                "response/comment/method/find_comment_by_id_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
@@ -68,8 +73,10 @@ public class CommentControllerTest extends AbstractControllerTest {
         CommentFilter filter = new CommentFilter();
         filter.setNewsId(1L);
 
-        Mockito.when(commentService.filterBy(filter)).thenReturn(comments);
-        Mockito.when(commentMapper.commentListToCommentListResponse(comments)).thenReturn(response);
+        Mockito.when(commentService.filterBy(filter))
+                .thenReturn(comments);
+        Mockito.when(commentMapper.commentListToCommentListResponse(comments))
+                .thenReturn(response);
 
         String actualResponse = mockMvc.perform(MockMvcRequestBuilders
                 .get("/api/comment/filter?newsId=1"))
@@ -78,10 +85,13 @@ public class CommentControllerTest extends AbstractControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        Mockito.verify(commentService, Mockito.times(1)).filterBy(filter);
-        Mockito.verify(commentMapper, Mockito.times(1)).commentListToCommentListResponse(comments);
+        Mockito.verify(commentService, Mockito.times(1))
+                .filterBy(filter);
+        Mockito.verify(commentMapper, Mockito.times(1))
+                .commentListToCommentListResponse(comments);
 
-        String expectedResponse = TestUtils.readStringFromResource("response/comment/method/filter_by_comment_response.json");
+        String expectedResponse = TestUtils.readStringFromResource(
+                "response/comment/method/filter_by_comment_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
@@ -95,9 +105,12 @@ public class CommentControllerTest extends AbstractControllerTest {
         request.setNewsId(2L);
         request.setContent("created content");
 
-        Mockito.when(commentMapper.requestToComment(request)).thenReturn(comment);
-        Mockito.when(commentMapper.commentToResponse(comment)).thenReturn(response);
-        Mockito.when(commentService.save(comment)).thenReturn(comment);
+        Mockito.when(commentMapper.requestToComment(request))
+                .thenReturn(comment);
+        Mockito.when(commentMapper.commentToResponse(comment))
+                .thenReturn(response);
+        Mockito.when(commentService.save(comment))
+                .thenReturn(comment);
 
         String actualResponse = mockMvc.perform(MockMvcRequestBuilders
                 .post("/api/comment")
@@ -108,11 +121,15 @@ public class CommentControllerTest extends AbstractControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        Mockito.verify(commentMapper, Mockito.times(1)).requestToComment(request);
-        Mockito.verify(commentMapper, Mockito.times(1)).commentToResponse(comment);
-        Mockito.verify(commentService, Mockito.times(1)).save(comment);
+        Mockito.verify(commentMapper, Mockito.times(1))
+                .requestToComment(request);
+        Mockito.verify(commentMapper, Mockito.times(1))
+                .commentToResponse(comment);
+        Mockito.verify(commentService, Mockito.times(1))
+                .save(comment);
 
-        String expectedResponse = TestUtils.readStringFromResource("response/comment/method/create_comment_response.json");
+        String expectedResponse = TestUtils.readStringFromResource(
+                "response/comment/method/create_comment_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
@@ -126,12 +143,15 @@ public class CommentControllerTest extends AbstractControllerTest {
         request.setNewsId(1L);
         request.setContent("updated content");
 
-        Mockito.when(commentMapper.requestToComment(1L, request)).thenReturn(comment);
-        Mockito.when(commentMapper.commentToResponse(comment)).thenReturn(response);
-        Mockito.when(commentService.update(comment)).thenReturn(comment);
+        Mockito.when(commentMapper.requestToComment(1L, request))
+                .thenReturn(comment);
+        Mockito.when(commentMapper.commentToResponse(comment))
+                .thenReturn(response);
+        Mockito.when(commentService.update(comment))
+                .thenReturn(comment);
 
         String actualResponse = mockMvc.perform(MockMvcRequestBuilders
-                .put("/api/comment/1")
+                .put("/api/comment/1?userId=1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -139,11 +159,15 @@ public class CommentControllerTest extends AbstractControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        Mockito.verify(commentMapper, Mockito.times(1)).requestToComment(1L, request);
-        Mockito.verify(commentMapper, Mockito.times(1)).commentToResponse(comment);
-        Mockito.verify(commentService, Mockito.times(1)).update(comment);
+        Mockito.verify(commentMapper, Mockito.times(1))
+                .requestToComment(1L, request);
+        Mockito.verify(commentMapper, Mockito.times(1))
+                .commentToResponse(comment);
+        Mockito.verify(commentService, Mockito.times(1))
+                .update(comment);
 
-        String expectedResponse = TestUtils.readStringFromResource("response/comment/method/update_comment_response.json");
+        String expectedResponse = TestUtils.readStringFromResource(
+                "response/comment/method/update_comment_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
@@ -151,15 +175,17 @@ public class CommentControllerTest extends AbstractControllerTest {
     @Test
     public void whenDeleteById_thenReturnStatusNoContent() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                .delete("/api/comment/500"))
+                .delete("/api/comment/500?userId=1"))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
 
-        Mockito.verify(commentService, Mockito.times(1)).deleteById(500L);
+        Mockito.verify(commentService, Mockito.times(1))
+                .deleteById(500L);
     }
 
     @Test
     public void whenFindByIdNotExistedComment_thenReturnError() throws Exception {
-        Mockito.when(commentService.findById(500L)).thenThrow(new EntityNotFoundException("Comment with id 500 not found"));
+        Mockito.when(commentService.findById(500L))
+                .thenThrow(new EntityNotFoundException("Comment with id 500 not found"));
 
         String actualResponse = mockMvc.perform(MockMvcRequestBuilders
                 .get("/api/comment/500"))
@@ -168,9 +194,11 @@ public class CommentControllerTest extends AbstractControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        Mockito.verify(commentService, Mockito.times(1)).findById(500L);
+        Mockito.verify(commentService, Mockito.times(1))
+                .findById(500L);
 
-        String expectedResponse = TestUtils.readStringFromResource("response/comment/method/comment_by_id_not_found_response.json");
+        String expectedResponse = TestUtils.readStringFromResource(
+                "response/comment/method/comment_by_id_not_found_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
@@ -184,7 +212,8 @@ public class CommentControllerTest extends AbstractControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        String expectedResponse = TestUtils.readStringFromResource("response/comment/filter/null_comment_filter_news_id_response.json");
+        String expectedResponse = TestUtils.readStringFromResource(
+                "response/comment/filter/null_comment_filter_news_id_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
@@ -199,7 +228,8 @@ public class CommentControllerTest extends AbstractControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        String expectedResponse = TestUtils.readStringFromResource("response/comment/filter/invalid_comment_filter_news_id.json");
+        String expectedResponse = TestUtils.readStringFromResource(
+                "response/comment/filter/invalid_comment_filter_news_id.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
@@ -220,7 +250,8 @@ public class CommentControllerTest extends AbstractControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        String expectedResponse = TestUtils.readStringFromResource("response/comment/request/null_author_id_response.json");
+        String expectedResponse = TestUtils.readStringFromResource(
+                "response/comment/request/null_author_id_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
@@ -241,7 +272,8 @@ public class CommentControllerTest extends AbstractControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        String expectedResponse = TestUtils.readStringFromResource("response/comment/request/null_news_id_response.json");
+        String expectedResponse = TestUtils.readStringFromResource(
+                "response/comment/request/null_news_id_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
@@ -263,7 +295,8 @@ public class CommentControllerTest extends AbstractControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        String expectedResponse = TestUtils.readStringFromResource("response/comment/request/blank_content_response.json");
+        String expectedResponse = TestUtils.readStringFromResource(
+                "response/comment/request/blank_content_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
@@ -285,7 +318,8 @@ public class CommentControllerTest extends AbstractControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        String expectedResponse = TestUtils.readStringFromResource("response/comment/request/invalid_author_id_response.json");
+        String expectedResponse = TestUtils.readStringFromResource(
+                "response/comment/request/invalid_author_id_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
@@ -307,7 +341,8 @@ public class CommentControllerTest extends AbstractControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        String expectedResponse = TestUtils.readStringFromResource("response/comment/request/invalid_news_id_response.json");
+        String expectedResponse = TestUtils.readStringFromResource(
+                "response/comment/request/invalid_news_id_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }

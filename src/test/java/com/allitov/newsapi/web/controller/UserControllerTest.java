@@ -38,8 +38,10 @@ public class UserControllerTest extends AbstractControllerTest {
         User user = createUser(1L, "Ivan", "email@example");
         UserResponse response = createUserResponse(1L, "Ivan", "email@example");
 
-        Mockito.when(userService.findById(1L)).thenReturn(user);
-        Mockito.when(userMapper.userToResponse(user)).thenReturn(response);
+        Mockito.when(userService.findById(1L))
+                .thenReturn(user);
+        Mockito.when(userMapper.userToResponse(user))
+                .thenReturn(response);
 
         String actualResponse = mockMvc.perform(MockMvcRequestBuilders.get("/api/user/1"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -47,10 +49,13 @@ public class UserControllerTest extends AbstractControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        Mockito.verify(userService, Mockito.times(1)).findById(1L);
-        Mockito.verify(userMapper, Mockito.times(1)).userToResponse(user);
+        Mockito.verify(userService, Mockito.times(1))
+                .findById(1L);
+        Mockito.verify(userMapper, Mockito.times(1))
+                .userToResponse(user);
 
-        String expectedResponse = TestUtils.readStringFromResource("response/user/method/find_user_by_id_response.json");
+        String expectedResponse = TestUtils.readStringFromResource(
+                "response/user/method/find_user_by_id_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
@@ -69,8 +74,10 @@ public class UserControllerTest extends AbstractControllerTest {
         filter.setPageNumber(0);
         filter.setPageSize(10);
 
-        Mockito.when(userService.filterBy(filter)).thenReturn(users);
-        Mockito.when(userMapper.userListToUserResponseList(users)).thenReturn(response);
+        Mockito.when(userService.filterBy(filter))
+                .thenReturn(users);
+        Mockito.when(userMapper.userListToUserResponseList(users))
+                .thenReturn(response);
 
         String actualResponse = mockMvc.perform(MockMvcRequestBuilders
                 .get("/api/user/filter?pageNumber=0&pageSize=10"))
@@ -79,10 +86,13 @@ public class UserControllerTest extends AbstractControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        Mockito.verify(userService, Mockito.times(1)).filterBy(filter);
-        Mockito.verify(userMapper, Mockito.times(1)).userListToUserResponseList(users);
+        Mockito.verify(userService, Mockito.times(1))
+                .filterBy(filter);
+        Mockito.verify(userMapper, Mockito.times(1))
+                .userListToUserResponseList(users);
 
-        String expectedResponse = TestUtils.readStringFromResource("response/user/method/filter_by_users_response.json");
+        String expectedResponse = TestUtils.readStringFromResource(
+                "response/user/method/filter_by_users_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
@@ -96,9 +106,12 @@ public class UserControllerTest extends AbstractControllerTest {
         request.setUserName("New User");
         request.setEmail("user@email");
 
-        Mockito.when(userMapper.requestToUser(request)).thenReturn(userFromRequest);
-        Mockito.when(userMapper.userToResponse(user)).thenReturn(response);
-        Mockito.when(userService.save(userFromRequest)).thenReturn(user);
+        Mockito.when(userMapper.requestToUser(request))
+                .thenReturn(userFromRequest);
+        Mockito.when(userMapper.userToResponse(user))
+                .thenReturn(response);
+        Mockito.when(userService.save(userFromRequest))
+                .thenReturn(user);
 
         String actualResponse = mockMvc.perform(MockMvcRequestBuilders
                 .post("/api/user")
@@ -109,11 +122,15 @@ public class UserControllerTest extends AbstractControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        Mockito.verify(userMapper, Mockito.times(1)).requestToUser(request);
-        Mockito.verify(userMapper, Mockito.times(1)).userToResponse(user);
-        Mockito.verify(userService, Mockito.times(1)).save(userFromRequest);
+        Mockito.verify(userMapper, Mockito.times(1))
+                .requestToUser(request);
+        Mockito.verify(userMapper, Mockito.times(1))
+                .userToResponse(user);
+        Mockito.verify(userService, Mockito.times(1))
+                .save(userFromRequest);
 
-        String expectedResponse = TestUtils.readStringFromResource("response/user/method/create_user_response.json");
+        String expectedResponse = TestUtils.readStringFromResource(
+                "response/user/method/create_user_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
@@ -127,9 +144,12 @@ public class UserControllerTest extends AbstractControllerTest {
         request.setUserName("Updated User");
         request.setEmail("user@email");
 
-        Mockito.when(userMapper.requestToUser(1L, request)).thenReturn(userFromRequest);
-        Mockito.when(userMapper.userToResponse(user)).thenReturn(response);
-        Mockito.when(userService.update(userFromRequest)).thenReturn(user);
+        Mockito.when(userMapper.requestToUser(1L, request))
+                .thenReturn(userFromRequest);
+        Mockito.when(userMapper.userToResponse(user))
+                .thenReturn(response);
+        Mockito.when(userService.update(userFromRequest))
+                .thenReturn(user);
 
         String actualResponse = mockMvc.perform(MockMvcRequestBuilders
                 .put("/api/user/1")
@@ -140,11 +160,15 @@ public class UserControllerTest extends AbstractControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        Mockito.verify(userMapper, Mockito.times(1)).requestToUser(1L, request);
-        Mockito.verify(userMapper, Mockito.times(1)).userToResponse(user);
-        Mockito.verify(userService, Mockito.times(1)).update(userFromRequest);
+        Mockito.verify(userMapper, Mockito.times(1))
+                .requestToUser(1L, request);
+        Mockito.verify(userMapper, Mockito.times(1))
+                .userToResponse(user);
+        Mockito.verify(userService, Mockito.times(1))
+                .update(userFromRequest);
 
-        String expectedResponse = TestUtils.readStringFromResource("response/user/method/update_user_response.json");
+        String expectedResponse = TestUtils.readStringFromResource(
+                "response/user/method/update_user_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
@@ -155,12 +179,14 @@ public class UserControllerTest extends AbstractControllerTest {
                 .delete("/api/user/500"))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
 
-        Mockito.verify(userService, Mockito.times(1)).deleteById(500L);
+        Mockito.verify(userService, Mockito.times(1))
+                .deleteById(500L);
     }
 
     @Test
     public void whenFindByIdNotExistedUser_thenReturnError() throws Exception {
-        Mockito.when(userService.findById(500L)).thenThrow(new EntityNotFoundException("User with id 500 not found"));
+        Mockito.when(userService.findById(500L))
+                .thenThrow(new EntityNotFoundException("User with id 500 not found"));
 
         String actualResponse = mockMvc.perform(MockMvcRequestBuilders
                 .get("/api/user/500"))
@@ -169,9 +195,11 @@ public class UserControllerTest extends AbstractControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        Mockito.verify(userService, Mockito.times(1)).findById(500L);
+        Mockito.verify(userService, Mockito.times(1))
+                .findById(500L);
 
-        String expectedResponse = TestUtils.readStringFromResource("response/user/method/user_by_id_not_found_response.json");
+        String expectedResponse = TestUtils.readStringFromResource(
+                "response/user/method/user_by_id_not_found_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
@@ -192,7 +220,8 @@ public class UserControllerTest extends AbstractControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        String expectedResponse = TestUtils.readStringFromResource("response/user/request/blank_user_email_response.json");
+        String expectedResponse = TestUtils.readStringFromResource(
+                "response/user/request/blank_user_email_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
@@ -213,7 +242,8 @@ public class UserControllerTest extends AbstractControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        String expectedResponse = TestUtils.readStringFromResource("response/user/request/blank_username_response.json");
+        String expectedResponse = TestUtils.readStringFromResource(
+                "response/user/request/blank_username_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
@@ -234,7 +264,8 @@ public class UserControllerTest extends AbstractControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        String expectedResponse = TestUtils.readStringFromResource("response/user/request/invalid_username_size_response.json");
+        String expectedResponse = TestUtils.readStringFromResource(
+                "response/user/request/invalid_username_size_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
@@ -255,7 +286,8 @@ public class UserControllerTest extends AbstractControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        String expectedResponse = TestUtils.readStringFromResource("response/user/request/invalid_user_email_size_response.json");
+        String expectedResponse = TestUtils.readStringFromResource(
+                "response/user/request/invalid_user_email_size_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
@@ -269,7 +301,8 @@ public class UserControllerTest extends AbstractControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        String expectedResponse = TestUtils.readStringFromResource("response/user/filter/null_user_filter_page_size_response.json");
+        String expectedResponse = TestUtils.readStringFromResource(
+                "response/user/filter/null_user_filter_page_size_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
@@ -283,7 +316,8 @@ public class UserControllerTest extends AbstractControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        String expectedResponse = TestUtils.readStringFromResource("response/user/filter/null_user_filter_page_number_response.json");
+        String expectedResponse = TestUtils.readStringFromResource(
+                "response/user/filter/null_user_filter_page_number_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
@@ -298,7 +332,8 @@ public class UserControllerTest extends AbstractControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        String expectedResponse = TestUtils.readStringFromResource("response/user/filter/invalid_user_filter_page_size_response.json");
+        String expectedResponse = TestUtils.readStringFromResource(
+                "response/user/filter/invalid_user_filter_page_size_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
@@ -313,7 +348,8 @@ public class UserControllerTest extends AbstractControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        String expectedResponse = TestUtils.readStringFromResource("response/user/filter/invalid_user_filter_page_number_response.json");
+        String expectedResponse = TestUtils.readStringFromResource(
+                "response/user/filter/invalid_user_filter_page_number_response.json");
 
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }

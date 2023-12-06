@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: test
+    active: default
   datasource:
     url: jdbc:postgresql://localhost:5432/news
     username: postgres
@@ -11,7 +11,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         default_batch_fetch_size: 50
