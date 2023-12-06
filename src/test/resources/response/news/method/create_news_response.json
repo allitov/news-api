@@ -1,0 +1,9 @@
+{
+  "id": 2,
+  "content": "created content",
+  "authorId": 2,
+  "categoryId": 2,
+  "creationDate": "1970-01-01T00:00:00Z",
+  "lastUpdate": "1970-01-01T00:00:00Z",
+  "comments": []
+}
