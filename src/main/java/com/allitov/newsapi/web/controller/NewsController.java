@@ -123,7 +123,8 @@ public class NewsController {
             description = "Update news by ID. Return id, content, author id, category id, creation date, " +
                     "last update time and comments list of updated news",
             parameters = {
-                    @Parameter(name = "id", example = "1")
+                    @Parameter(name = "id", example = "1"),
+                    @Parameter(name = "userId", example = "1")
             }
     )
     @ApiResponses({
@@ -149,6 +150,15 @@ public class NewsController {
                             @Content(schema = @Schema(implementation = ErrorResponse.class),
                                     mediaType = "application/json")
                     }
+            ),
+            @ApiResponse(
+                    description = "Return status 403 and error message " +
+                            "if news author id and user id are different",
+                    responseCode = "403",
+                    content = {
+                            @Content(schema = @Schema(implementation = ErrorResponse.class),
+                                    mediaType = "application/json")
+                    }
             )
     })
     @PutMapping("/{id}")
@@ -165,12 +175,22 @@ public class NewsController {
             summary = "Delete news by ID",
             description = "Delete news by ID. Return status 204",
             parameters = {
-                    @Parameter(name = "id", example = "1")
+                    @Parameter(name = "id", example = "1"),
+                    @Parameter(name = "userId", example = "1")
             }
     )
     @ApiResponses({
             @ApiResponse(
                     responseCode = "204"
+            ),
+            @ApiResponse(
+                    description = "Return status 403 and error message " +
+                            "if news author id and user id are different",
+                    responseCode = "403",
+                    content = {
+                            @Content(schema = @Schema(implementation = ErrorResponse.class),
+                                    mediaType = "application/json")
+                    }
             )
     })
     @DeleteMapping("/{id}")

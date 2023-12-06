@@ -123,7 +123,8 @@ public class CommentController {
             description = "Update comment by ID. Return id, content, author id, news id, " +
                     "creation date and last update time of updated comment",
             parameters = {
-                    @Parameter(name = "id", example = "1")
+                    @Parameter(name = "id", example = "1"),
+                    @Parameter(name = "userId", example = "1")
             }
     )
     @ApiResponses({
@@ -149,6 +150,15 @@ public class CommentController {
                             @Content(schema = @Schema(implementation = ErrorResponse.class),
                                     mediaType = "application/json")
                     }
+            ),
+            @ApiResponse(
+                    description = "Return status 403 and error message " +
+                            "if comment author id and user id are different",
+                    responseCode = "403",
+                    content = {
+                            @Content(schema = @Schema(implementation = ErrorResponse.class),
+                                    mediaType = "application/json")
+                    }
             )
     })
     @PutMapping("/{id}")
@@ -165,12 +175,22 @@ public class CommentController {
             summary = "Delete comment by ID",
             description = "Delete comment by ID. Return status 204",
             parameters = {
-                    @Parameter(name = "id", example = "1")
+                    @Parameter(name = "id", example = "1"),
+                    @Parameter(name = "userId", example = "1")
             }
     )
     @ApiResponses({
             @ApiResponse(
                     responseCode = "204"
+            ),
+            @ApiResponse(
+                    description = "Return status 403 and error message " +
+                            "if comment author id and user id are different",
+                    responseCode = "403",
+                    content = {
+                            @Content(schema = @Schema(implementation = ErrorResponse.class),
+                                    mediaType = "application/json")
+                    }
             )
     })
     @DeleteMapping("/{id}")
