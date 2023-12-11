@@ -7,12 +7,27 @@ import com.allitov.newsapi.web.filter.NewsFilter;
 import lombok.experimental.UtilityClass;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.util.List;
+
 @UtilityClass
 public class NewsSpecification {
 
-    public static Specification<News> withFilter(NewsFilter filter) {
-        return Specification.where(byAuthorName(filter.getAuthor()))
+    public static Specification<News> withFilter(NewsFilter filter, List<Long> ids) {
+        return Specification.where(byIdsIn(ids))
+                .and(byAuthorName(filter.getAuthor()))
                 .and(byNewsCategory(filter.getCategory()));
+    }
+
+    private static Specification<News> byIdsIn(List<Long> ids) {
+        return (root, query, criteriaBuilder) -> {
+            if (ids == null) {
+                return null;
+            }
+
+            query.orderBy(criteriaBuilder.asc(root.get(News.Fields.id)));
+
+            return criteriaBuilder.in(root.get(News.Fields.id)).value(ids);
+        };
     }
 
     private static Specification<News> byAuthorName(String authorName) {
