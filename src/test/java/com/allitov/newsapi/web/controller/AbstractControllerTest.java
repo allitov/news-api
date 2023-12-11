@@ -4,6 +4,7 @@ import com.allitov.newsapi.model.data.Comment;
 import com.allitov.newsapi.model.data.News;
 import com.allitov.newsapi.model.data.NewsCategory;
 import com.allitov.newsapi.model.data.User;
+import com.allitov.newsapi.testcontainer.PostgresContainerInitializer;
 import com.allitov.newsapi.web.dto.response.comment.CommentResponse;
 import com.allitov.newsapi.web.dto.response.news.NewsResponse;
 import com.allitov.newsapi.web.dto.response.news.NewsWithCommentsCount;
@@ -13,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.Instant;
@@ -20,6 +22,7 @@ import java.util.List;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@ContextConfiguration(initializers = PostgresContainerInitializer.class)
 public abstract class AbstractControllerTest {
 
     @Autowired

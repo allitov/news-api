@@ -1,8 +1,0 @@
-spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/news
-    username: postgres
-    password: postgres
-    hikari:
-      schema: news_schema
-    driver-class-name: org.postgresql.Driver
