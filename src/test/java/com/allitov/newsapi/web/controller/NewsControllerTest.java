@@ -1,5 +1,6 @@
 package com.allitov.newsapi.web.controller;
 
+import com.allitov.newsapi.aop.ChangingAspect;
 import com.allitov.newsapi.model.data.News;
 import com.allitov.newsapi.model.service.NewsService;
 import com.allitov.newsapi.utils.TestUtils;
@@ -33,6 +34,9 @@ public class NewsControllerTest extends AbstractControllerTest {
 
     @MockBean
     private NewsMapper newsMapper;
+
+    @MockBean
+    private ChangingAspect changingAspect;
 
     @Test
     public void whenFindById_thenReturnNewsById() throws Exception {

@@ -1,5 +1,6 @@
 package com.allitov.newsapi.web.controller;
 
+import com.allitov.newsapi.aop.ChangingAspect;
 import com.allitov.newsapi.model.data.Comment;
 import com.allitov.newsapi.model.service.CommentService;
 import com.allitov.newsapi.utils.TestUtils;
@@ -31,6 +32,9 @@ public class CommentControllerTest extends AbstractControllerTest {
 
     @MockBean
     private CommentMapper commentMapper;
+
+    @MockBean
+    private ChangingAspect changingAspect;
 
     @Test
     public void whenFindById_thenReturnCommentById() throws Exception {
