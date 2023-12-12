@@ -1,7 +1,41 @@
-delete from news_schema.comments;
-delete from news_schema.news;
-delete from news_schema.news_categories;
-delete from news_schema.users;
+DROP TABLE IF EXISTS news_schema.comments;
+DROP TABLE IF EXISTS news_schema.news;
+DROP TABLE IF EXISTS news_schema.news_categories;
+DROP TABLE IF EXISTS news_schema.users;
+
+CREATE TABLE IF NOT EXISTS news_schema.users (
+    id BIGSERIAL PRIMARY KEY,
+    user_name VARCHAR(50) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    registration_date TIMESTAMP NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS news_schema.news_categories (
+    id BIGSERIAL PRIMARY KEY,
+    category_name VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS news_schema.news (
+    id BIGSERIAL PRIMARY KEY,
+    content TEXT NOT NULL,
+    creation_date TIMESTAMP NOT NULL,
+    last_update TIMESTAMP NOT NULL,
+    author_id BIGINT NOT NULL,
+    category_id BIGINT NOT NULL,
+    FOREIGN KEY (author_id) REFERENCES news_schema.users(id) ON DELETE CASCADE,
+    FOREIGN KEY (category_id) REFERENCES news_schema.news_categories(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS news_schema.comments (
+    id BIGSERIAL PRIMARY KEY,
+    content TEXT NOT NULL,
+    creation_date TIMESTAMP NOT NULL,
+    last_update TIMESTAMP NOT NULL,
+    news_id BIGINT NOT NULL,
+    author_id BIGINT NOT NULL,
+    FOREIGN KEY (news_id) REFERENCES news_schema.news(id) ON DELETE CASCADE,
+    FOREIGN KEY (author_id) REFERENCES news_schema.users(id) ON DELETE CASCADE
+);
 
 insert into news_schema.users (user_name, email, registration_date) values ('Garek Simper', 'gsimper0@dropbox.com', '2023-06-30 15:03:20');
 insert into news_schema.users (user_name, email, registration_date) values ('Nial Lodemann', 'nlodemann1@state.gov', '2023-01-28 03:00:27');
