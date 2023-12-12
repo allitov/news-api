@@ -1,10 +1,10 @@
 spring:
   profiles:
-    active: default
+    active: ${APP_PROFILE:default}
   datasource:
-    url: jdbc:postgresql://localhost:5432/news
-    username: postgres
-    password: postgres
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/news
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:postgres}
     hikari:
       schema: news_schema
     driver-class-name: org.postgresql.Driver
@@ -12,7 +12,7 @@ spring:
     open-in-view: false
     hibernate:
       ddl-auto: none
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         format_sql: true
