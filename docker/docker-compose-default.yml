@@ -2,6 +2,7 @@ version: '3'
 
 services:
   postgres:
+    container_name: postgres_container
     image: postgres:12.3
     ports:
       - "5432:5432"
@@ -15,6 +16,7 @@ services:
       - postgres
 
   news-api:
+    container_name: news_api
     image: news-api
     ports:
       - "8080:8080"
