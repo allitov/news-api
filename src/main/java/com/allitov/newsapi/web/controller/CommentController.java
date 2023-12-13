@@ -120,8 +120,8 @@ public class CommentController {
 
     @Operation(
             summary = "Update comment by ID",
-            description = "Update comment by ID. Return id, content, author id, news id, " +
-                    "creation date and last update time of updated comment",
+            description = "Update comment by ID. Only the user who created the comment can update it. " +
+                    "Return id, content, author id, news id, creation date and last update time of updated comment",
             parameters = {
                     @Parameter(name = "id", example = "1"),
                     @Parameter(name = "userId", example = "1")
@@ -173,7 +173,8 @@ public class CommentController {
 
     @Operation(
             summary = "Delete comment by ID",
-            description = "Delete comment by ID. Return status 204",
+            description = "Delete comment by ID. Only the user who created the comment can delete it. " +
+                    "Return status 204",
             parameters = {
                     @Parameter(name = "id", example = "1"),
                     @Parameter(name = "userId", example = "1")
