@@ -49,4 +49,4 @@ docker compose --project-name="news-api-db" down
 
 ## Документация
 Для ознакомления с API приложения и просмотра примеров запросов можно обратиться к 
-[интерактивной документации Swagger](http://localhost:8080/swagger-ui/index.html).
+[интерактивной документации Swagger](http://localhost:8080/swagger-ui/index.html) (доступна только после запуска приложения).
