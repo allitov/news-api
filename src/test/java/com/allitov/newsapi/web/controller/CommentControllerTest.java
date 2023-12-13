@@ -163,6 +163,8 @@ public class CommentControllerTest extends AbstractControllerTest {
                 .getResponse()
                 .getContentAsString();
 
+        Mockito.verify(changingAspect, Mockito.times(1))
+                .canChange();
         Mockito.verify(commentMapper, Mockito.times(1))
                 .requestToComment(1L, request);
         Mockito.verify(commentMapper, Mockito.times(1))
@@ -182,6 +184,8 @@ public class CommentControllerTest extends AbstractControllerTest {
                 .delete("/api/comment/500?userId=1"))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
 
+        Mockito.verify(changingAspect, Mockito.times(1))
+                .canChange();
         Mockito.verify(commentService, Mockito.times(1))
                 .deleteById(500L);
     }

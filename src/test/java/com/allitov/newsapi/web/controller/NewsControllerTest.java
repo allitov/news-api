@@ -174,6 +174,8 @@ public class NewsControllerTest extends AbstractControllerTest {
                 .getResponse()
                 .getContentAsString();
 
+        Mockito.verify(changingAspect, Mockito.times(1))
+                .canChange();
         Mockito.verify(newsMapper, Mockito.times(1))
                 .requestToNews(1L, request);
         Mockito.verify(newsMapper, Mockito.times(1))
@@ -193,6 +195,8 @@ public class NewsControllerTest extends AbstractControllerTest {
                 .delete("/api/news/500?userId=1"))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
 
+        Mockito.verify(changingAspect, Mockito.times(1))
+                .canChange();
         Mockito.verify(newsService, Mockito.times(1))
                 .deleteById(500L);
     }
