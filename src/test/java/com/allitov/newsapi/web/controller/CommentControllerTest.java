@@ -1,5 +1,6 @@
 package com.allitov.newsapi.web.controller;
 
+import com.allitov.newsapi.aop.ChangingAspect;
 import com.allitov.newsapi.model.data.Comment;
 import com.allitov.newsapi.model.service.CommentService;
 import com.allitov.newsapi.utils.TestUtils;
@@ -31,6 +32,9 @@ public class CommentControllerTest extends AbstractControllerTest {
 
     @MockBean
     private CommentMapper commentMapper;
+
+    @MockBean
+    private ChangingAspect changingAspect;
 
     @Test
     public void whenFindById_thenReturnCommentById() throws Exception {
@@ -159,6 +163,8 @@ public class CommentControllerTest extends AbstractControllerTest {
                 .getResponse()
                 .getContentAsString();
 
+        Mockito.verify(changingAspect, Mockito.times(1))
+                .canChange();
         Mockito.verify(commentMapper, Mockito.times(1))
                 .requestToComment(1L, request);
         Mockito.verify(commentMapper, Mockito.times(1))
@@ -178,6 +184,8 @@ public class CommentControllerTest extends AbstractControllerTest {
                 .delete("/api/comment/500?userId=1"))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
 
+        Mockito.verify(changingAspect, Mockito.times(1))
+                .canChange();
         Mockito.verify(commentService, Mockito.times(1))
                 .deleteById(500L);
     }

@@ -1,5 +1,6 @@
 package com.allitov.newsapi.web.controller;
 
+import com.allitov.newsapi.aop.ChangingAspect;
 import com.allitov.newsapi.model.data.News;
 import com.allitov.newsapi.model.service.NewsService;
 import com.allitov.newsapi.utils.TestUtils;
@@ -33,6 +34,9 @@ public class NewsControllerTest extends AbstractControllerTest {
 
     @MockBean
     private NewsMapper newsMapper;
+
+    @MockBean
+    private ChangingAspect changingAspect;
 
     @Test
     public void whenFindById_thenReturnNewsById() throws Exception {
@@ -170,6 +174,8 @@ public class NewsControllerTest extends AbstractControllerTest {
                 .getResponse()
                 .getContentAsString();
 
+        Mockito.verify(changingAspect, Mockito.times(1))
+                .canChange();
         Mockito.verify(newsMapper, Mockito.times(1))
                 .requestToNews(1L, request);
         Mockito.verify(newsMapper, Mockito.times(1))
@@ -189,6 +195,8 @@ public class NewsControllerTest extends AbstractControllerTest {
                 .delete("/api/news/500?userId=1"))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
 
+        Mockito.verify(changingAspect, Mockito.times(1))
+                .canChange();
         Mockito.verify(newsService, Mockito.times(1))
                 .deleteById(500L);
     }

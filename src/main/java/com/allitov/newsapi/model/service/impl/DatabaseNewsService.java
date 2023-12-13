@@ -29,10 +29,9 @@ public class DatabaseNewsService implements NewsService {
 
     @Override
     public List<News> filterBy(NewsFilter filter) {
+        List<Long> ids = newsRepository.getAllIds(PageRequest.of(filter.getPageNumber(), filter.getPageSize())).getContent();
         return newsRepository.findAll(
-                NewsSpecification.withFilter(filter),
-                PageRequest.of(filter.getPageNumber(), filter.getPageSize())
-        ).getContent();
+                NewsSpecification.withFilter(filter, ids));
     }
 
     @Override

@@ -120,7 +120,8 @@ public class NewsController {
 
     @Operation(
             summary = "Update news by ID",
-            description = "Update news by ID. Return id, content, author id, category id, creation date, " +
+            description = "Update news by ID. Only the user who created the news can update it. " +
+                    "Return id, content, author id, category id, creation date, " +
                     "last update time and comments list of updated news",
             parameters = {
                     @Parameter(name = "id", example = "1"),
@@ -173,7 +174,8 @@ public class NewsController {
 
     @Operation(
             summary = "Delete news by ID",
-            description = "Delete news by ID. Return status 204",
+            description = "Delete news by ID. Only the user who created the news can delete it. " +
+                    "Return status 204",
             parameters = {
                     @Parameter(name = "id", example = "1"),
                     @Parameter(name = "userId", example = "1")
