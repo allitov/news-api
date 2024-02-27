@@ -20,7 +20,7 @@ docker build -t news-api .
 ### Запустить приложение с базой данных в Docker
 #### Запустить приложение в обычном режиме
 ```shell
-docker compose --file ./docker/docker-compose-default.yml --project-name="news-api" up
+docker compose --file ./docker/docker-compose-default.yml up -d
 ```
 
 ##### Остановить работу приложения
@@ -30,7 +30,7 @@ docker compose --project-name="news-api" down
 
 #### Запустить приложение в демонстрационном режиме (есть записи в базе данных)
 ```shell
-docker compose --file ./docker/docker-compose-demo.yml --project-name="news-api-demo" up
+docker compose --file ./docker/docker-compose-demo.yml up -d
 ```
 
 ##### Остановить работу приложения
@@ -38,13 +38,13 @@ docker compose --file ./docker/docker-compose-demo.yml --project-name="news-api-
 docker compose --project-name="news-api-demo" down
 ```
 
-### Запустить только базу данных
+### Запустить только окружение
 ```shell
-docker compose --file ./docker/docker-compose-postgres.yml --project-name="news-api-db" up
+docker compose --file ./docker/docker-compose-env.yml up -d
 ```
-#### Остановить работу базы данных
+#### Остановить окружение
 ```shell
-docker compose --project-name="news-api-db" down
+docker compose --project-name="news-api-env" down
 ```
 
 ## Документация

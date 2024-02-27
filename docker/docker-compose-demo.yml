@@ -1,9 +1,11 @@
 version: '3'
 
+name: news-api-demo
+
 services:
   postgres:
     container_name: postgres_container
-    image: postgres:12.3
+    image: postgres:16
     ports:
       - "5432:5432"
     environment:
