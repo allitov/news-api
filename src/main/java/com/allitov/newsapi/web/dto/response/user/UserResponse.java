@@ -14,7 +14,7 @@ public class UserResponse {
     private Long id;
 
     @Schema(example = "Ivan Ivanov")
-    private String name;
+    private String username;
 
     @Schema(example = "email@example")
     private String email;

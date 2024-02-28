@@ -1,5 +1,6 @@
 package com.allitov.newsapi.model.service.impl;
 
+import com.allitov.newsapi.model.data.RoleType;
 import com.allitov.newsapi.model.data.User;
 import com.allitov.newsapi.model.repository.UserRepository;
 import com.allitov.newsapi.model.service.UserService;
@@ -8,16 +9,21 @@ import com.allitov.newsapi.web.filter.UserFilter;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class DatabaseUserService implements UserService {
 
     private final UserRepository userRepository;
+
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public User findById(Long id) {
@@ -50,5 +56,21 @@ public class DatabaseUserService implements UserService {
     @Override
     public void deleteById(Long id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public User createNewAccount(User user, Set<RoleType> roles) {
+        user.setRoles(roles);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User findUserByName(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(
+                        MessageFormat.format("User with username {0} not found", username))
+                );
     }
 }
