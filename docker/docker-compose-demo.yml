@@ -19,7 +19,9 @@ services:
 
   news-api:
     container_name: news_api
-    image: news-api
+    build:
+      context: ../
+      dockerfile: Dockerfile
     ports:
       - "8080:8080"
     environment:
