@@ -6,6 +6,8 @@ import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -24,6 +26,14 @@ public class User {
     private String name;
 
     private String email;
+
+    private String password;
+
+    @ElementCollection(targetClass = RoleType.class, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    private Set<RoleType> roles = new HashSet<>();
 
     @CreationTimestamp
     private Instant registrationDate;
