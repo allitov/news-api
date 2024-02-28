@@ -1,4 +1,4 @@
-package com.allitov.newsapi.web.controller;
+package com.allitov.newsapi.web.controller.v1;
 
 import com.allitov.newsapi.aop.Changeable;
 import com.allitov.newsapi.model.data.Comment;
@@ -24,7 +24,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/comment")
+@RequestMapping("/api/v1/comment")
 @RequiredArgsConstructor
 @Tag(name = "Comment controller", description = "Comment API version 1.0")
 public class CommentController {

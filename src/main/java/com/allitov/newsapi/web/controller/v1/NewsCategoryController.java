@@ -1,4 +1,4 @@
-package com.allitov.newsapi.web.controller;
+package com.allitov.newsapi.web.controller.v1;
 
 import com.allitov.newsapi.model.data.NewsCategory;
 import com.allitov.newsapi.model.service.NewsCategoryService;
@@ -23,7 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/news_category")
+@RequestMapping("/api/v1/news_category")
 @RequiredArgsConstructor
 @Tag(name = "News category controller", description = "News category API version 1.0")
 public class NewsCategoryController {

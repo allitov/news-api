@@ -1,4 +1,4 @@
-package com.allitov.newsapi.web.controller;
+package com.allitov.newsapi.web.controller.v1;
 
 import com.allitov.newsapi.model.data.User;
 import com.allitov.newsapi.model.service.UserService;
@@ -23,7 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/v1/user")
 @RequiredArgsConstructor
 @Tag(name = "User controller", description = "User API version 1.0")
 public class UserController {

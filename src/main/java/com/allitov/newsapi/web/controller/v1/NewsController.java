@@ -1,4 +1,4 @@
-package com.allitov.newsapi.web.controller;
+package com.allitov.newsapi.web.controller.v1;
 
 import com.allitov.newsapi.aop.Changeable;
 import com.allitov.newsapi.model.data.News;
@@ -24,7 +24,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/news")
+@RequestMapping("/api/v1/news")
 @RequiredArgsConstructor
 @Tag(name = "News controller", description = "News API version 1.0")
 public class NewsController {
