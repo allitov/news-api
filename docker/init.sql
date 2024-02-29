@@ -35,11 +35,10 @@ CREATE TABLE IF NOT EXISTS news_schema.comments (
     FOREIGN KEY (author_id) REFERENCES news_schema.users(id) ON DELETE CASCADE
 );
 
-CREATE TYPE ROLE_TYPE AS ENUM('ROLE_ADMIN', 'ROLE_USER', 'ROLE_MODERATOR');
-
 CREATE TABLE IF NOT EXISTS news_schema.user_roles (
     user_id BIGINT NOT NULL,
-    roles ROLE_TYPE NOT NULL,
+    roles VARCHAR(20) NOT NULL,
+    CHECK (((roles)::text = ANY ((ARRAY['USER'::character varying, 'ADMIN'::character varying, 'MODERATOR'::character varying])::text[]))),
     PRIMARY KEY (user_id, roles),
     FOREIGN KEY (user_id) REFERENCES news_schema.users(id) ON DELETE CASCADE
 );

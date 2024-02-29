@@ -2,9 +2,9 @@ package com.allitov.newsapi.model.data;
 
 public enum RoleType {
 
-    ROLE_ADMIN,
+    ADMIN,
 
-    ROLE_USER,
+    USER,
 
-    ROLE_MODERATOR
+    MODERATOR
 }

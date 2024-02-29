@@ -1,6 +1,5 @@
 package com.allitov.newsapi.model.service.impl;
 
-import com.allitov.newsapi.model.data.RoleType;
 import com.allitov.newsapi.model.data.User;
 import com.allitov.newsapi.model.repository.UserRepository;
 import com.allitov.newsapi.model.service.UserService;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -59,8 +57,7 @@ public class DatabaseUserService implements UserService {
     }
 
     @Override
-    public User createNewAccount(User user, Set<RoleType> roles) {
-        user.setRoles(roles);
+    public User createNewAccount(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         return userRepository.save(user);

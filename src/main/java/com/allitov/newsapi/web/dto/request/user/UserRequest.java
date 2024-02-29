@@ -5,6 +5,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Data
 public class UserRequest {
 
@@ -17,4 +20,8 @@ public class UserRequest {
     @Size(min = 3, max = 256, message = "Email length must be {min} <= length <= {max}")
     @Schema(example = "email@example")
     private String email;
+
+    private String password;
+
+    private Set<String> roles = new HashSet<>();
 }
