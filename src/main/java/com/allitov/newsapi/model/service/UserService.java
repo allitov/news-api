@@ -19,5 +19,5 @@ public interface UserService {
 
     User createNewAccount(User user);
 
-    User findUserByName(String username);
+    User findUserByUsername(String username);
 }

@@ -1,5 +1,6 @@
 package com.allitov.newsapi.model.service.impl;
 
+import com.allitov.newsapi.exception.ExceptionMessage;
 import com.allitov.newsapi.model.data.User;
 import com.allitov.newsapi.model.repository.UserRepository;
 import com.allitov.newsapi.model.service.UserService;
@@ -12,7 +13,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.text.MessageFormat;
 import java.util.List;
 
 @Service
@@ -26,8 +26,7 @@ public class DatabaseUserService implements UserService {
     @Override
     public User findById(Long id) {
         return userRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException(MessageFormat.format(
-                        "User with id {0} not found", id))
+                () -> new EntityNotFoundException(String.format(ExceptionMessage.USER_BY_ID_NOT_FOUND, id))
         );
     }
 
@@ -64,10 +63,10 @@ public class DatabaseUserService implements UserService {
     }
 
     @Override
-    public User findUserByName(String username) {
+    public User findUserByUsername(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(
-                        MessageFormat.format("User with username {0} not found", username))
+                        String.format(ExceptionMessage.USER_BY_USERNAME_NOT_FOUND, username))
                 );
     }
 }
