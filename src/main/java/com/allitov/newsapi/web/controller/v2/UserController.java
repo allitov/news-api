@@ -2,6 +2,7 @@ package com.allitov.newsapi.web.controller.v2;
 
 import com.allitov.newsapi.model.data.User;
 import com.allitov.newsapi.model.service.UserService;
+import com.allitov.newsapi.security.UserDetailsImpl;
 import com.allitov.newsapi.web.dto.request.user.UserRequest;
 import com.allitov.newsapi.web.dto.response.user.UserListResponse;
 import com.allitov.newsapi.web.dto.response.user.UserResponse;
@@ -11,6 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -31,7 +33,8 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponse> findById(@PathVariable("id") Long id) {
+    public ResponseEntity<UserResponse> findById(@PathVariable("id") Long id,
+                                                 @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return ResponseEntity.ok(userMapper.userToResponse(userService.findById(id)));
     }
 
