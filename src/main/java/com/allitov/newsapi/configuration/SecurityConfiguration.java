@@ -45,13 +45,14 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity,
                                            AuthenticationManager authenticationManager) throws Exception {
         httpSecurity.authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
                         .requestMatchers("/api/v2/user/sign-up").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v2/user").hasAuthority(RoleType.ADMIN.name())
                         .requestMatchers("/api/v2/user/**").hasAnyAuthority(
                                 RoleType.USER.name(),
                                 RoleType.MODERATOR.name(),
                                 RoleType.ADMIN.name())
-                )
+                        .anyRequest().authenticated())
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
