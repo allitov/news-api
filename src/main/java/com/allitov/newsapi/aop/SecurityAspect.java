@@ -5,18 +5,22 @@ import com.allitov.newsapi.exception.IllegalDataAccessException;
 import com.allitov.newsapi.security.UserDetailsImpl;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
 public class SecurityAspect {
 
-    @Before(
-            value = "execution(* com.allitov.newsapi.web.controller.v2.UserController.findById(..)) " +
-                    "&& args(userId, userDetails)",
-            argNames = "userId, userDetails"
+    @Pointcut(
+            value = "execution(* com.allitov.newsapi.web.controller.v2.UserController.*ById(..)) " +
+                    "&& args(userId, userDetails, ..)",
+            argNames = "userId,userDetails"
     )
-    public void controllerFindUserByIdAdvice(Long userId, UserDetailsImpl userDetails) {
+    public void userControllerByIdMethodsPointcut(Long userId, UserDetailsImpl userDetails) {}
+
+    @Before(value = "userControllerByIdMethodsPointcut(userId, userDetails)", argNames = "userId,userDetails")
+    public void userControllerByIdMethodsAdvice(Long userId, UserDetailsImpl userDetails) {
         if (userDetails.getAuthorities().size() > 1) {
             return;
         }

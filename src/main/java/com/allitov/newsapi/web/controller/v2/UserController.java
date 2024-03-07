@@ -47,6 +47,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateById(@PathVariable("id") Long id,
+                                           @AuthenticationPrincipal UserDetailsImpl userDetails,
                                            @RequestBody UserRequest request) {
         userService.update(userMapper.requestToUser(id, request));
 
@@ -54,7 +55,8 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> deleteById(@PathVariable("id") Long id,
+                                           @AuthenticationPrincipal UserDetailsImpl userDetails) {
         userService.deleteById(id);
 
         return ResponseEntity.noContent().build();
