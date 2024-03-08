@@ -85,7 +85,7 @@ public class UserController {
                     }
             )
     })
-    @GetMapping
+    @GetMapping("/filter")
     public ResponseEntity<UserListResponse> filterBy(@ParameterObject @Valid UserFilter filter) {
         return ResponseEntity.ok(userMapper.userListToUserResponseList(userService.filterBy(filter)));
     }

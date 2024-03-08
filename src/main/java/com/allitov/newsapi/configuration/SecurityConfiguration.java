@@ -51,11 +51,23 @@ public class SecurityConfiguration {
         httpSecurity.authorizeHttpRequests(auth -> auth
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
                         .requestMatchers("/api/v2/user/sign-up").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/v2/user").hasAuthority(RoleType.ADMIN.name())
+                        .requestMatchers("/api/v2/user/filter").hasAuthority(
+                                RoleType.ADMIN.name()
+                        )
                         .requestMatchers("/api/v2/user/**").hasAnyAuthority(
                                 RoleType.USER.name(),
                                 RoleType.MODERATOR.name(),
-                                RoleType.ADMIN.name())
+                                RoleType.ADMIN.name()
+                        )
+                        .requestMatchers(HttpMethod.GET, "/api/v2/news-category/**").hasAnyAuthority(
+                                RoleType.USER.name(),
+                                RoleType.MODERATOR.name(),
+                                RoleType.ADMIN.name()
+                        )
+                        .requestMatchers("/api/v2/news-category/**").hasAnyAuthority(
+                                RoleType.MODERATOR.name(),
+                                RoleType.ADMIN.name()
+                        )
                         .anyRequest().authenticated())
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(Customizer.withDefaults())
