@@ -1,5 +1,6 @@
 package com.allitov.newsapi.web.filter;
 
+import com.allitov.newsapi.exception.ExceptionMessage;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -11,13 +12,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class NewsCategoryFilter {
 
-    @NotNull(message = "Page size must be specified")
-    @Positive(message = "Page size must be > 0")
+    @NotNull(message = ExceptionMessage.FILTER_NULL_PAGE_SIZE)
+    @Positive(message = ExceptionMessage.FILTER_INVALID_PAGE_SIZE)
     @Schema(example = "1", description = "Page size must be > 0")
     private Integer pageSize;
 
-    @NotNull(message = "Page number must be specified")
-    @PositiveOrZero(message = "Page number must be >= 0")
+    @NotNull(message = ExceptionMessage.FILTER_NULL_PAGE_NUMBER)
+    @PositiveOrZero(message = ExceptionMessage.FILTER_INVALID_PAGE_NUMBER)
     @Schema(example = "0", description = "Page number must be >= 0")
     private Integer pageNumber;
 }

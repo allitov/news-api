@@ -31,9 +31,13 @@ public class ExceptionMessage {
 
     public final String USER_INVALID_ROLES = "User roles must be any of ['USER', 'MODERATOR', 'ADMIN']";
 
+    public final String NEWS_CATEGORY_BLANK_NAME = "Name must be specified";
+
+    public final String NEWS_CATEGORY_INVALID_NAME = "News category name length must be {min} <= length <= {max}";
+
     public final String FILTER_NULL_PAGE_SIZE = "Page size must be specified";
 
-    public final String FILTER_INVALID_PAGE_SIZE = "Page size must be >= 1";
+    public final String FILTER_INVALID_PAGE_SIZE = "Page size must be > 0";
 
     public final String FILTER_NULL_PAGE_NUMBER = "Page number must be specified";
 
