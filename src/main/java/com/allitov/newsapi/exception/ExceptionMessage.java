@@ -5,6 +5,10 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class ExceptionMessage {
 
+    public final String AUTHENTICATION_FAILURE = "Authentication failure";
+
+    public final String ACCESS_DENIED = "No required authorities";
+
     public final String USER_DATA_ILLEGAL_ACCESS = "User with id = '%d' cannot get or change data of user with id = '%d'";
 
     public final String USER_BY_ID_NOT_FOUND = "User with id = '%d' not found";

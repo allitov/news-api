@@ -15,7 +15,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -43,7 +45,9 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity,
-                                           AuthenticationManager authenticationManager) throws Exception {
+                                           AuthenticationManager authenticationManager,
+                                           AuthenticationEntryPoint customAuthenticationEntryPoint,
+                                           AccessDeniedHandler customAccessDeniedHandler) throws Exception {
         httpSecurity.authorizeHttpRequests(auth -> auth
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
                         .requestMatchers("/api/v2/user/sign-up").permitAll()
@@ -56,7 +60,10 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationManager(authenticationManager);
+                .authenticationManager(authenticationManager)
+                .exceptionHandling(configurer -> configurer
+                        .authenticationEntryPoint(customAuthenticationEntryPoint)
+                        .accessDeniedHandler(customAccessDeniedHandler));
 
         return httpSecurity.build();
     }

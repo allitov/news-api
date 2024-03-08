@@ -55,15 +55,8 @@ public class UserController {
                     }
             ),
             @ApiResponse(
-                    description = "Returns status 401 if user is not authorized",
-                    responseCode = "401",
-                    content = {
-                            @Content(schema = @Schema(hidden = true))
-                    }
-            ),
-            @ApiResponse(
-                    description = "Returns status 403 and error message if user has no required authorities",
-                    responseCode = "403",
+                    description = "Returns status 400 and error message if filter has invalid values",
+                    responseCode = "400",
                     content = {
                             @Content(
                                     schema = @Schema(implementation = ErrorResponse.class),
@@ -72,8 +65,18 @@ public class UserController {
                     }
             ),
             @ApiResponse(
-                    description = "Returns status 400 and error message if filter has invalid values",
-                    responseCode = "400",
+                    description = "Returns status 401 and error message if user is not authorized",
+                    responseCode = "401",
+                    content = {
+                            @Content(
+                                    schema = @Schema(implementation = ErrorResponse.class),
+                                    mediaType = "application/json"
+                            )
+                    }
+            ),
+            @ApiResponse(
+                    description = "Returns status 403 and error message if user has no required authorities",
+                    responseCode = "403",
                     content = {
                             @Content(
                                     schema = @Schema(implementation = ErrorResponse.class),
@@ -108,9 +111,14 @@ public class UserController {
                     }
             ),
             @ApiResponse(
-                    description = "Returns status 401 if user is not authorized",
+                    description = "Returns status 401 and error message if user is not authorized",
                     responseCode = "401",
-                    content = @Content(schema = @Schema(hidden = true))
+                    content = {
+                            @Content(
+                                    schema = @Schema(implementation = ErrorResponse.class),
+                                    mediaType = "application/json"
+                            )
+                    }
             ),
             @ApiResponse(
                     description = "Returns status 403 and error message if user has no required authorities",
@@ -194,8 +202,24 @@ public class UserController {
                     }
             ),
             @ApiResponse(
-                    description = "Returns status 401 if user is not authorized",
-                    responseCode = "401"
+                    description = "Returns status 401 and error message if user is not authorized",
+                    responseCode = "401",
+                    content = {
+                            @Content(
+                                    schema = @Schema(implementation = ErrorResponse.class),
+                                    mediaType = "application/json"
+                            )
+                    }
+            ),
+            @ApiResponse(
+                    description = "Returns status 403 and error message if user has no required authorities",
+                    responseCode = "403",
+                    content = {
+                            @Content(
+                                    schema = @Schema(implementation = ErrorResponse.class),
+                                    mediaType = "application/json"
+                            )
+                    }
             ),
             @ApiResponse(
                     description = "Returns status 404 and error message if user with requested id was not found",
@@ -232,8 +256,24 @@ public class UserController {
                     responseCode = "204"
             ),
             @ApiResponse(
-                    description = "Returns status 401 if user is not authorized",
-                    responseCode = "401"
+                    description = "Returns status 401 and error message if user is not authorized",
+                    responseCode = "401",
+                    content = {
+                            @Content(
+                                    schema = @Schema(implementation = ErrorResponse.class),
+                                    mediaType = "application/json"
+                            )
+                    }
+            ),
+            @ApiResponse(
+                    description = "Returns status 403 and error message if user has no required authorities",
+                    responseCode = "403",
+                    content = {
+                            @Content(
+                                    schema = @Schema(implementation = ErrorResponse.class),
+                                    mediaType = "application/json"
+                            )
+                    }
             )
     })
     @DeleteMapping("/{id}")
