@@ -38,11 +38,6 @@ public class DatabaseUserService implements UserService {
     }
 
     @Override
-    public User save(User user) {
-        return userRepository.save(user);
-    }
-
-    @Override
     public User update(User user) {
         User foundUser = findById(user.getId());
         BeanUtils.copyNonNullProperties(user, foundUser);
