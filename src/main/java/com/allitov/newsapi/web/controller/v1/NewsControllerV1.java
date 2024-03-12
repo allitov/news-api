@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/news")
 @RequiredArgsConstructor
 @Tag(name = "News controller", description = "News API version 1.0")
-public class NewsController {
+public class NewsControllerV1 {
 
     private final NewsService newsService;
 
