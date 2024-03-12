@@ -68,6 +68,11 @@ public class SecurityConfiguration {
                                 RoleType.MODERATOR.name(),
                                 RoleType.ADMIN.name()
                         )
+                        .requestMatchers("/api/v2/news/**").hasAnyAuthority(
+                                RoleType.USER.name(),
+                                RoleType.MODERATOR.name(),
+                                RoleType.ADMIN.name()
+                        )
                         .anyRequest().authenticated())
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(Customizer.withDefaults())
