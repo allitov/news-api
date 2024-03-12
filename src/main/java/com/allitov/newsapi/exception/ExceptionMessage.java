@@ -31,6 +31,8 @@ public class ExceptionMessage {
 
     public final String USER_INVALID_ROLES = "User roles must be any of ['USER', 'MODERATOR', 'ADMIN']";
 
+    public final String NEWS_CATEGORY_BY_ID_NOT_FOUND = "News category with id = '%d' not found";
+
     public final String NEWS_CATEGORY_BLANK_NAME = "Name must be specified";
 
     public final String NEWS_CATEGORY_INVALID_NAME = "News category name length must be {min} <= length <= {max}";

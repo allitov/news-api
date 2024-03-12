@@ -5,7 +5,7 @@ import lombok.*;
 import lombok.experimental.FieldNameConstants;
 
 @Data
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @FieldNameConstants

@@ -23,14 +23,14 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(value = UserController.class, excludeAutoConfiguration = SecurityAutoConfiguration.class)
 public class UserControllerTest {
@@ -63,7 +63,8 @@ public class UserControllerTest {
         Mockito.when(userMapper.userListToUserResponseList(foundUsers))
                 .thenReturn(response);
 
-        mockMvc.perform(get("/api/v2/user/filter?pageSize=1&pageNumber=0"))
+        mockMvc.perform(get("/api/v2/user/filter?pageSize={pageSize}&pageNumber={pageNumber}",
+                        filter.getPageSize(), filter.getPageNumber()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json("{'users': []}"));

@@ -194,7 +194,7 @@ public class NewsCategoryController {
             )
     })
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody NewsCategoryRequest request) {
+    public ResponseEntity<Void> create(@Valid @RequestBody NewsCategoryRequest request) {
         NewsCategory newsCategory = newsCategoryService.save(newsCategoryMapper.requestToNewsCategory(request));
 
         return ResponseEntity.created(URI.create("/api/v2/news-category/" + newsCategory.getId())).build();
@@ -257,7 +257,8 @@ public class NewsCategoryController {
             )
     })
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateById(@PathVariable("id") Long id, @RequestBody NewsCategoryRequest request) {
+    public ResponseEntity<Void> updateById(@PathVariable("id") Long id,
+                                           @Valid @RequestBody NewsCategoryRequest request) {
         newsCategoryService.update(newsCategoryMapper.requestToNewsCategory(id, request));
 
         return ResponseEntity.noContent().build();
