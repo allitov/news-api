@@ -2,7 +2,9 @@ package com.allitov.newsapi.aop;
 
 import com.allitov.newsapi.exception.ExceptionMessage;
 import com.allitov.newsapi.exception.IllegalDataAccessException;
+import com.allitov.newsapi.model.service.NewsService;
 import com.allitov.newsapi.security.UserDetailsImpl;
+import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
@@ -10,7 +12,10 @@ import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
+@RequiredArgsConstructor
 public class SecurityAspect {
+
+    private final NewsService newsService;
 
     @Pointcut(
             value = "execution(* com.allitov.newsapi.web.controller.v2.UserController.*ById(..)) " +
@@ -45,7 +50,8 @@ public class SecurityAspect {
 
     @Before(value = "newsControllerUpdateByIdMethodPointcut(newsId, userDetails)", argNames = "newsId,userDetails")
     public void newsControllerUpdateByIdMethodAdvice(Long newsId, UserDetailsImpl userDetails) {
-        if (!userDetails.getId().equals(newsId)) {
+        Long authorId = newsService.findById(newsId).getAuthor().getId();
+        if (!userDetails.getId().equals(authorId)) {
             throw new IllegalDataAccessException(String.format(
                     ExceptionMessage.NEWS_DATA_ILLEGAL_ACCESS, userDetails.getId(), newsId));
         }
@@ -57,7 +63,8 @@ public class SecurityAspect {
             return;
         }
 
-        if (!userDetails.getId().equals(newsId)) {
+        Long authorId = newsService.findById(newsId).getAuthor().getId();
+        if (!userDetails.getId().equals(authorId)) {
             throw new IllegalDataAccessException(String.format(
                     ExceptionMessage.NEWS_DATA_ILLEGAL_ACCESS, userDetails.getId(), newsId));
         }
