@@ -38,10 +38,13 @@ public class NewsController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> create(@Valid @RequestBody NewsRequest request) {
-        News news = newsService.save(newsMapper.requestToNews(request));
+    public ResponseEntity<Void> create(@Valid @RequestBody NewsRequest request,
+                                       @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        News newsToSave = newsMapper.requestToNews(request);
+        newsToSave.setAuthor(userDetails.getUser());
+        News savedNews =  newsService.save(newsToSave);
 
-        return ResponseEntity.created(URI.create("/api/v2/news/" + news.getId())).build();
+        return ResponseEntity.created(URI.create("/api/v2/news/" + savedNews.getId())).build();
     }
 
     @PutMapping("/{id}")

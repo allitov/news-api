@@ -13,9 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class NewsMapperDelegate implements NewsMapper {
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private NewsCategoryService newsCategoryService;
 
     @Autowired
@@ -25,7 +22,6 @@ public abstract class NewsMapperDelegate implements NewsMapper {
     public News requestToNews(NewsRequest request) {
         return News.builder()
                 .content(request.getContent())
-                .author(userService.findById(request.getAuthorId()))
                 .category(newsCategoryService.findById(request.getCategoryId()))
                 .build();
     }

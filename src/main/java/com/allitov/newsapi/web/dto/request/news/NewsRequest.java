@@ -1,25 +1,25 @@
 package com.allitov.newsapi.web.dto.request.news;
 
+import com.allitov.newsapi.exception.ExceptionMessage;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class NewsRequest {
 
-    @NotBlank(message = "Content must be specified")
+    @NotBlank(message = ExceptionMessage.NEWS_BLANK_CONTENT)
     @Schema(example = "news content", minLength = 1)
     private String content;
 
-    @NotNull(message = "Author id must be specified")
-    @Positive(message = "Author id must be > 0")
-    @Schema(example = "1", minimum = "1")
-    private Long authorId;
-
-    @NotNull(message = "Category id must be specified")
-    @Positive(message = "Category id must be > 0")
-    @Schema(example = "1", minimum = "1")
+    @NotNull(message = ExceptionMessage.NEWS_NULL_CATEGORY_ID)
+    @Schema(example = "1")
     private Long categoryId;
 }
