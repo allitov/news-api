@@ -2,6 +2,7 @@ package com.allitov.newsapi.web.controller.v2;
 
 import com.allitov.newsapi.model.data.News;
 import com.allitov.newsapi.model.service.NewsService;
+import com.allitov.newsapi.security.UserDetailsImpl;
 import com.allitov.newsapi.web.dto.request.news.NewsRequest;
 import com.allitov.newsapi.web.dto.response.news.NewsListResponse;
 import com.allitov.newsapi.web.dto.response.news.NewsResponse;
@@ -12,7 +13,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -46,7 +46,7 @@ public class NewsController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateById(@PathVariable("id") Long id,
-                                           @AuthenticationPrincipal UserDetails userDetails,
+                                           @AuthenticationPrincipal UserDetailsImpl userDetails,
                                            @Valid @RequestBody NewsRequest request) {
         newsService.update(newsMapper.requestToNews(id, request));
 
@@ -55,7 +55,7 @@ public class NewsController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable("id") Long id,
-                                           @AuthenticationPrincipal UserDetails userDetails) {
+                                           @AuthenticationPrincipal UserDetailsImpl userDetails) {
         newsService.deleteById(id);
 
         return ResponseEntity.noContent().build();

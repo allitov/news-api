@@ -19,6 +19,18 @@ public class SecurityAspect {
     )
     public void userControllerByIdMethodsPointcut(Long userId, UserDetailsImpl userDetails) {}
 
+    @Pointcut(
+            value = "execution(* com.allitov.newsapi.web.controller.v2.NewsController.updateById(..)) " +
+                    "&& args(newsId, userDetails, ..)",
+            argNames = "newsId,userDetails")
+    public void newsControllerUpdateByIdMethodPointcut(Long newsId, UserDetailsImpl userDetails) {}
+
+    @Pointcut(
+            value = "execution(* com.allitov.newsapi.web.controller.v2.NewsController.deleteById(..)) " +
+                    "&& args(newsId, userDetails, ..)",
+            argNames = "newsId,userDetails")
+    public void newsControllerDeleteByIdMethodPointcut(Long newsId, UserDetailsImpl userDetails) {}
+
     @Before(value = "userControllerByIdMethodsPointcut(userId, userDetails)", argNames = "userId,userDetails")
     public void userControllerByIdMethodsAdvice(Long userId, UserDetailsImpl userDetails) {
         if (userDetails.getAuthorities().size() > 1) {
@@ -28,6 +40,26 @@ public class SecurityAspect {
         if (!userDetails.getId().equals(userId)) {
             throw new IllegalDataAccessException(String.format(
                     ExceptionMessage.USER_DATA_ILLEGAL_ACCESS, userDetails.getId(), userId));
+        }
+    }
+
+    @Before(value = "newsControllerUpdateByIdMethodPointcut(newsId, userDetails)", argNames = "newsId,userDetails")
+    public void newsControllerUpdateByIdMethodAdvice(Long newsId, UserDetailsImpl userDetails) {
+        if (!userDetails.getId().equals(newsId)) {
+            throw new IllegalDataAccessException(String.format(
+                    ExceptionMessage.NEWS_DATA_ILLEGAL_ACCESS, userDetails.getId(), newsId));
+        }
+    }
+
+    @Before(value = "newsControllerDeleteByIdMethodPointcut(newsId, userDetails)", argNames = "newsId,userDetails")
+    public void newsControllerDeleteByIdMethodAdvice(Long newsId, UserDetailsImpl userDetails) {
+        if (userDetails.getAuthorities().size() > 1) {
+            return;
+        }
+
+        if (!userDetails.getId().equals(newsId)) {
+            throw new IllegalDataAccessException(String.format(
+                    ExceptionMessage.NEWS_DATA_ILLEGAL_ACCESS, userDetails.getId(), newsId));
         }
     }
 }
