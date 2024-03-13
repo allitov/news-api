@@ -2,7 +2,6 @@ package com.allitov.newsapi.web.mapper.delegate;
 
 import com.allitov.newsapi.model.data.News;
 import com.allitov.newsapi.model.service.NewsCategoryService;
-import com.allitov.newsapi.model.service.UserService;
 import com.allitov.newsapi.web.dto.request.news.NewsRequest;
 import com.allitov.newsapi.web.dto.response.news.NewsResponse;
 import com.allitov.newsapi.web.dto.response.news.NewsWithCommentsCount;

@@ -1,6 +1,7 @@
 package com.allitov.newsapi.security;
 
 import com.allitov.newsapi.model.data.User;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -8,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
+@Getter
 @RequiredArgsConstructor
 public class UserDetailsImpl implements UserDetails {
 
@@ -22,10 +24,6 @@ public class UserDetailsImpl implements UserDetails {
 
     public Long getId() {
         return user.getId();
-    }
-
-    public User getUser() {
-        return user;
     }
 
     @Override
