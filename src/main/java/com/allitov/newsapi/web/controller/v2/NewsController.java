@@ -191,6 +191,16 @@ public class NewsController {
                                     mediaType = "application/json"
                             )
                     }
+            ),
+            @ApiResponse(
+                    description = "Returns status 404 and error message if request has nonexistent news category id",
+                    responseCode = "404",
+                    content = {
+                            @Content(
+                                    schema = @Schema(implementation = ErrorResponse.class),
+                                    mediaType = "application/json"
+                            )
+                    }
             )
     })
     @PostMapping
@@ -248,7 +258,8 @@ public class NewsController {
                     }
             ),
             @ApiResponse(
-                    description = "Returns status 404 and error message if news with requested id was not found",
+                    description = "Returns status 404 and error message if news with requested id was not found " +
+                            "or request has nonexistent news category id",
                     responseCode = "404",
                     content = {
                             @Content(

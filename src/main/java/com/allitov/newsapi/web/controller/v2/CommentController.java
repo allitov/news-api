@@ -193,7 +193,7 @@ public class CommentController {
                     }
             ),
             @ApiResponse(
-                    description = "Returns status 404 and error message if request has nonexistent news category id",
+                    description = "Returns status 404 and error message if request has nonexistent news id",
                     responseCode = "404",
                     content = {
                             @Content(
@@ -259,7 +259,7 @@ public class CommentController {
             ),
             @ApiResponse(
                     description = "Returns status 404 and error message if comment with requested id was not found " +
-                            "or request has nonexistent news category id",
+                            "or request has nonexistent news id",
                     responseCode = "404",
                     content = {
                             @Content(
