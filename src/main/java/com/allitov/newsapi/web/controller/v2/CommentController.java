@@ -39,10 +39,13 @@ public class CommentController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> create(@Valid @RequestBody CommentRequest request) {
-        Comment comment = commentService.save(commentMapper.requestToComment(request));
+    public ResponseEntity<Void> create(@Valid @RequestBody CommentRequest request,
+                                       @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        Comment commentToSave = commentMapper.requestToComment(request);
+        commentToSave.setAuthor(userDetails.getUser());
+        Comment savedComment = commentService.save(commentToSave);
 
-        return ResponseEntity.created(URI.create("/api/v2/comment/" + comment.getId())).build();
+        return ResponseEntity.created(URI.create("/api/v2/comment/" + savedComment.getId())).build();
     }
 
     @PutMapping("/{id}")
