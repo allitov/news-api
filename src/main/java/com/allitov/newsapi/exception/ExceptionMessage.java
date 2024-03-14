@@ -47,6 +47,14 @@ public class ExceptionMessage {
 
     public final String COMMENT_DATA_ILLEGAL_ACCESS = "User with id = '%d' cannot get or change data of comment with id = '%d'";
 
+    public final String COMMENT_BY_ID_NOT_FOUND = "Comment with id = '%d' not found";
+
+    public final String COMMENT_NULL_NEWS_ID = "News id must be specified";
+
+    public final String COMMENT_BLANK_CONTENT = "Content must be specified";
+
+    public final String COMMENT_FILTER_NULL_NEWS_ID = "News id must be specified";
+
     public final String FILTER_NULL_PAGE_SIZE = "Page size must be specified";
 
     public final String FILTER_INVALID_PAGE_SIZE = "Page size must be > 0";
