@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/comment")
 @RequiredArgsConstructor
 @Tag(name = "Comment controller", description = "Comment API version 1.0")
-public class CommentController {
+public class CommentControllerV1 {
 
     private final CommentService commentService;
 
