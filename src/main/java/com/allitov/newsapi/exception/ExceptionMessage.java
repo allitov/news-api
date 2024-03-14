@@ -45,6 +45,8 @@ public class ExceptionMessage {
 
     public final String NEWS_NULL_CATEGORY_ID = "Category id must be specified";
 
+    public final String COMMENT_DATA_ILLEGAL_ACCESS = "User with id = '%d' cannot get or change data of comment with id = '%d'";
+
     public final String FILTER_NULL_PAGE_SIZE = "Page size must be specified";
 
     public final String FILTER_INVALID_PAGE_SIZE = "Page size must be > 0";
