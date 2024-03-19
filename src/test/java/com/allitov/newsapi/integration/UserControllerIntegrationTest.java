@@ -273,7 +273,7 @@ public class UserControllerIntegrationTest {
             value = "Fina Sugden",
             setupBefore = TestExecutionEvent.TEST_METHOD
     )
-    public void givenIdAndROleUser_whenDeleteById_thenVoid() throws Exception {
+    public void givenIdAndRoleUser_whenDeleteById_thenVoid() throws Exception {
         assertEquals(5, userRepository.findAll().size());
 
         mockMvc.perform(delete("/api/v2/user/5"))

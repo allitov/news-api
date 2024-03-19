@@ -9,7 +9,7 @@ import java.lang.reflect.Field;
 public class BeanUtils {
 
     @SneakyThrows
-    public static void copyNonNullProperties(Object source, Object destination) {
+    public void copyNonNullProperties(Object source, Object destination) {
         Class<?> sourceClass = source.getClass();
         Field[] fields = sourceClass.getDeclaredFields();
 
