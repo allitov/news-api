@@ -2,6 +2,7 @@ package com.allitov.newsapi.aop;
 
 import com.allitov.newsapi.exception.ExceptionMessage;
 import com.allitov.newsapi.exception.IllegalDataAccessException;
+import com.allitov.newsapi.model.data.RoleType;
 import com.allitov.newsapi.model.service.CommentService;
 import com.allitov.newsapi.model.service.NewsService;
 import com.allitov.newsapi.security.UserDetailsImpl;
@@ -53,7 +54,7 @@ public class SecurityAspect {
 
     @Before(value = "userControllerByIdMethodsPointcut(userId, userDetails)", argNames = "userId,userDetails")
     public void userControllerByIdMethodsAdvice(Long userId, UserDetailsImpl userDetails) {
-        if (userDetails.getAuthorities().size() > 1) {
+        if (userDetails.getAuthorities().size() > 1 || !userDetails.getUser().getRoles().contains(RoleType.USER)) {
             return;
         }
 
@@ -74,7 +75,7 @@ public class SecurityAspect {
 
     @Before(value = "newsControllerDeleteByIdMethodPointcut(newsId, userDetails)", argNames = "newsId,userDetails")
     public void newsControllerDeleteByIdMethodAdvice(Long newsId, UserDetailsImpl userDetails) {
-        if (userDetails.getAuthorities().size() > 1) {
+        if (userDetails.getAuthorities().size() > 1 || !userDetails.getUser().getRoles().contains(RoleType.USER)) {
             return;
         }
 
@@ -96,7 +97,7 @@ public class SecurityAspect {
 
     @Before(value = "commentControllerDeleteByIdMethodPointcut(commentId, userDetails)", argNames = "commentId,userDetails")
     public void commentControllerDeleteByIdMethodAdvice(Long commentId, UserDetailsImpl userDetails) {
-        if (userDetails.getAuthorities().size() > 1) {
+        if (userDetails.getAuthorities().size() > 1 || !userDetails.getUser().getRoles().contains(RoleType.USER)) {
             return;
         }
 

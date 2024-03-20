@@ -22,7 +22,7 @@ public class UserRequest {
 
     @NotBlank(message = ExceptionMessage.USER_BLANK_USERNAME)
     @Size(min = 3, max = 50, message = ExceptionMessage.USER_INVALID_USERNAME)
-    @Schema(example = "Ivan Ivanov")
+    @Schema(example = "username")
     private String username;
 
     @NotBlank(message = ExceptionMessage.USER_BLANK_EMAIL)
