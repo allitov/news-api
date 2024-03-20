@@ -37,7 +37,7 @@ public class NewsSpecification {
             }
 
             return criteriaBuilder.equal(
-                    root.get(News.Fields.author).get(User.Fields.name), authorName
+                    root.get(News.Fields.author).get(User.Fields.username), authorName
             );
         };
     }

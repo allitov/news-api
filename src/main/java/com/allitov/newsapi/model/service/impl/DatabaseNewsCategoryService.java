@@ -1,5 +1,6 @@
 package com.allitov.newsapi.model.service.impl;
 
+import com.allitov.newsapi.exception.ExceptionMessage;
 import com.allitov.newsapi.model.data.NewsCategory;
 import com.allitov.newsapi.model.repository.NewsCategoryRepository;
 import com.allitov.newsapi.model.service.NewsCategoryService;
@@ -10,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.text.MessageFormat;
 import java.util.List;
 
 @Service
@@ -22,8 +22,7 @@ public class DatabaseNewsCategoryService implements NewsCategoryService {
     @Override
     public NewsCategory findById(Long id) {
         return newsCategoryRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException(MessageFormat.format(
-                        "News category with id {0} not found", id))
+                () -> new EntityNotFoundException(String.format(ExceptionMessage.NEWS_CATEGORY_BY_ID_NOT_FOUND, id))
         );
     }
 

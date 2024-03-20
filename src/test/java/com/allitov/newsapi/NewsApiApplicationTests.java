@@ -1,12 +1,11 @@
 package com.allitov.newsapi;
 
-import com.allitov.newsapi.testcontainer.PostgresContainerInitializer;
+import com.allitov.testutils.EnableTestcontainers;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
 
 @SpringBootTest
-@ContextConfiguration(initializers = PostgresContainerInitializer.class)
+@EnableTestcontainers
 class NewsApiApplicationTests {
 
     @Test

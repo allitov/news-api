@@ -1,52 +1,46 @@
 # News API
-**API для новостных порталов и сервисов.**
+**API for news portals and services.**
 
-Приложение предоставляет возможности по сохранению и редактированию новостей и комментариев к ним, 
-хранению данных пользователей, а также созданию новостных категорий.
+The application provides the ability to save and edit news and comments on them,
+storing user data, as well as creating news categories.
 
-## Сборка приложения
-### Клонирование репозитория и переход в рабочую директорию
+## Running locally
+### Clone the repository and move to the working directory
 ```shell
 git clone https://github.com/allitov/news-api.git
 cd news-api
 ```
 
-### Сборка в виде Docker image
+### Run the application in default mode
 ```shell
-docker build -t news-api .
+docker-compose --file ./docker/docker-compose-default.yml up -d
 ```
 
-## Запуск приложения
-### Запустить приложение с базой данных в Docker
-#### Запустить приложение в обычном режиме
+##### Stop the application
 ```shell
-docker compose --file ./docker/docker-compose-default.yml --project-name="news-api" up
+docker-compose --project-name="news-api" down
 ```
 
-##### Остановить работу приложения
+#### Run the application in demonstration mode (contains entries in the database)
 ```shell
-docker compose --project-name="news-api" down
+docker-compose --file ./docker/docker-compose-demo.yml up -d
 ```
 
-#### Запустить приложение в демонстрационном режиме (есть записи в базе данных)
+##### Stop the application
 ```shell
-docker compose --file ./docker/docker-compose-demo.yml --project-name="news-api-demo" up
+docker-compose --project-name="news-api-demo" down
 ```
 
-##### Остановить работу приложения
+### Run application environment only
 ```shell
-docker compose --project-name="news-api-demo" down
+docker-compose --file ./docker/docker-compose-env.yml up -d
+```
+#### Stop the environment
+```shell
+docker-compose --project-name="news-api-env" down
 ```
 
-### Запустить только базу данных
-```shell
-docker compose --file ./docker/docker-compose-postgres.yml --project-name="news-api-db" up
-```
-#### Остановить работу базы данных
-```shell
-docker compose --project-name="news-api-db" down
-```
-
-## Документация
-Для ознакомления с API приложения и просмотра примеров запросов можно обратиться к 
-[интерактивной документации Swagger](http://localhost:8080/swagger-ui/index.html) (доступна только после запуска приложения).
+## Documentation
+To familiarize yourself with the application's API and see example queries, 
+you can refer to the [interactive Swagger documentation](http://localhost:8080/swagger-ui/index.html) 
+(available only after launching the application).

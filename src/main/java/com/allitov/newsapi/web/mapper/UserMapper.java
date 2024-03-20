@@ -13,7 +13,6 @@ import java.util.List;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserMapper {
 
-    @Mapping(source = "userName", target = "name")
     User requestToUser(UserRequest request);
 
     default User requestToUser(Long userId, UserRequest request) {

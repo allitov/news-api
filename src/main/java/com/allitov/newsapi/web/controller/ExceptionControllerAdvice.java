@@ -1,5 +1,6 @@
-package com.allitov.newsapi.exception;
+package com.allitov.newsapi.web.controller;
 
+import com.allitov.newsapi.exception.IllegalDataAccessException;
 import com.allitov.newsapi.web.dto.response.error.ErrorResponse;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;

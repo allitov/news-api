@@ -1,20 +1,42 @@
 package com.allitov.newsapi.web.dto.request.user;
 
+import com.allitov.newsapi.exception.ExceptionMessage;
+import com.allitov.newsapi.model.data.RoleType;
+import com.allitov.newsapi.web.validation.ValuesOfEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.Set;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserRequest {
 
-    @NotBlank(message = "User name must be specified")
-    @Size(min = 3, max = 50, message = "Username length must be {min} <= length <= {max}")
-    @Schema(example = "Ivan Ivanov")
-    private String userName;
+    @NotBlank(message = ExceptionMessage.USER_BLANK_USERNAME)
+    @Size(min = 3, max = 50, message = ExceptionMessage.USER_INVALID_USERNAME)
+    @Schema(example = "username")
+    private String username;
 
-    @NotBlank(message = "Email must be specified")
-    @Size(min = 3, max = 255, message = "Email length must be {min} <= length <= {max}")
+    @NotBlank(message = ExceptionMessage.USER_BLANK_EMAIL)
+    @Size(min = 3, max = 256, message = ExceptionMessage.USER_INVALID_EMAIL)
     @Schema(example = "email@example")
     private String email;
+
+    @NotBlank(message = ExceptionMessage.USER_BLANK_PASSWORD)
+    @Size(min = 3, max = 256, message = ExceptionMessage.USER_INVALID_PASSWORD)
+    @Schema(example = "12345")
+    private String password;
+
+    @NotEmpty(message = ExceptionMessage.USER_NULL_ROLES)
+    @ValuesOfEnum(enumClass = RoleType.class, message = ExceptionMessage.USER_INVALID_ROLES)
+    @Schema(example = "[\"USER\", \"MODERATOR\", \"ADMIN\"]", allowableValues = {"USER", "MODERATOR", "ADMIN"})
+    private Set<String> roles;
 }

@@ -2,7 +2,6 @@ package com.allitov.newsapi.web.mapper.delegate;
 
 import com.allitov.newsapi.model.data.News;
 import com.allitov.newsapi.model.service.NewsCategoryService;
-import com.allitov.newsapi.model.service.UserService;
 import com.allitov.newsapi.web.dto.request.news.NewsRequest;
 import com.allitov.newsapi.web.dto.response.news.NewsResponse;
 import com.allitov.newsapi.web.dto.response.news.NewsWithCommentsCount;
@@ -11,9 +10,6 @@ import com.allitov.newsapi.web.mapper.NewsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class NewsMapperDelegate implements NewsMapper {
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private NewsCategoryService newsCategoryService;
@@ -25,7 +21,6 @@ public abstract class NewsMapperDelegate implements NewsMapper {
     public News requestToNews(NewsRequest request) {
         return News.builder()
                 .content(request.getContent())
-                .author(userService.findById(request.getAuthorId()))
                 .category(newsCategoryService.findById(request.getCategoryId()))
                 .build();
     }

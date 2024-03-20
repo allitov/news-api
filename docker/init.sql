@@ -2,8 +2,9 @@ CREATE SCHEMA IF NOT EXISTS news_schema;
 
 CREATE TABLE IF NOT EXISTS news_schema.users (
     id BIGSERIAL PRIMARY KEY,
-    user_name VARCHAR(50) NOT NULL,
-    email VARCHAR(255) NOT NULL,
+    username VARCHAR(50) NOT NULL,
+    email VARCHAR(256) NOT NULL,
+    password VARCHAR(256) NOT NULL,
     registration_date TIMESTAMP NOT NULL
 );
 
@@ -32,4 +33,12 @@ CREATE TABLE IF NOT EXISTS news_schema.comments (
     author_id BIGINT NOT NULL,
     FOREIGN KEY (news_id) REFERENCES news_schema.news(id) ON DELETE CASCADE,
     FOREIGN KEY (author_id) REFERENCES news_schema.users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS news_schema.user_roles (
+    user_id BIGINT NOT NULL,
+    roles VARCHAR(20) NOT NULL,
+    CHECK (((roles)::text = ANY ((ARRAY['USER'::character varying, 'ADMIN'::character varying, 'MODERATOR'::character varying])::text[]))),
+    PRIMARY KEY (user_id, roles),
+    FOREIGN KEY (user_id) REFERENCES news_schema.users(id) ON DELETE CASCADE
 );

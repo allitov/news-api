@@ -1,5 +1,6 @@
 package com.allitov.newsapi.model.service.impl;
 
+import com.allitov.newsapi.exception.ExceptionMessage;
 import com.allitov.newsapi.model.data.Comment;
 import com.allitov.newsapi.model.repository.CommentRepository;
 import com.allitov.newsapi.model.repository.specification.CommentSpecification;
@@ -10,7 +11,6 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.text.MessageFormat;
 import java.util.List;
 
 @Service
@@ -22,8 +22,7 @@ public class DatabaseCommentService implements CommentService {
     @Override
     public Comment findById(Long id) {
         return commentRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException(MessageFormat.format(
-                        "Comment with id {0} not found", id))
+                () -> new EntityNotFoundException(String.format(ExceptionMessage.COMMENT_BY_ID_NOT_FOUND, id))
         );
     }
 

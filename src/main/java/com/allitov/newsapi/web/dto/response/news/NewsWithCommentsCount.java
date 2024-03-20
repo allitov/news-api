@@ -1,13 +1,17 @@
 package com.allitov.newsapi.web.dto.response.news;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class NewsWithCommentsCount {
 
     @Schema(example = "1")
